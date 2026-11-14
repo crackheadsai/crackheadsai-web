@@ -74,8 +74,11 @@ h2 { font-family: var(--display); font-weight: 900; text-transform: uppercase; f
 .ev-title { font-family: var(--display); font-weight: 900; text-transform: uppercase; font-size: clamp(36px, 5vw, 56px); line-height: .95; margin: 0 0 16px; }
 .ev-when { font-weight: 600; margin: 0 0 12px; }
 .ev-desc { margin: 0 0 20px; color: var(--mute); max-width: 52ch; }
+.ev-place { display: grid; grid-template-columns: 4em minmax(0, 1fr); gap: 12px; margin: 0 0 20px; }
+.ev-place dt { font-weight: 600; }
+.ev-place dd { margin: 0; overflow-wrap: anywhere; }
 .going { margin: 0; font-variant-numeric: tabular-nums; }
-.going b { font-family: var(--display); font-weight: 900; font-size: 40px; line-height: 1; margin-right: 8px; }
+.going b { font-family: var(--display); font-weight: 900; font-size: 40px; line-height: 1; }
 .picker { display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0 0; }
 .chip { font: inherit; font-size: 13px; color: var(--fg); background: transparent; border: 1.5px solid var(--fg); border-radius: 999px; padding: 6px 14px; cursor: pointer; }
 .chip[aria-pressed="true"] { background: var(--fg); color: var(--bg); }
@@ -231,6 +234,11 @@ footer .wrap { max-width: 1120px; padding-block: 24px 40px; display: flex; justi
   // /api only exists on the Netlify site. Anywhere else (like a design preview) show a clearly marked sample.
   var LIVE = /(^|\.)crackheads\.ai$|netlify\.app$|^localhost$|^127\.0\.0\.1$/.test(location.hostname);
   var SAMPLE = [{ id: 'sample', title: 'Sample meetup', description: 'This is a sample. Real meetups load on the live site.', starts_at: new Date(Date.now() + 7 * 864e5).toISOString(), ends_at: null, image_url: null, attendee_count: 12 }];
+  var meetupTime = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/Chicago', weekday: 'long', month: 'long', day: 'numeric',
+    hour: 'numeric', minute: '2-digit', timeZoneName: 'short'
+  });
+  var meetupDay = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Chicago', month: 'short', day: 'numeric' });
   var events = [], selected = null, sample = false, lastMsg = null;
   var draft = { name: '', email: '', phone: '' };
 
@@ -245,10 +253,8 @@ footer .wrap { max-width: 1120px; padding-block: 24px 40px; display: flex; justi
     return el;
   }
   function when(ev) {
-    var s = new Date(ev.starts_at), e = ev.ends_at ? new Date(ev.ends_at) : null;
-    var t = s.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' }) + ' · ' + s.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
-    if (e) t += ' to ' + e.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
-    return t + ' ' + (s.toLocaleTimeString(undefined, { timeZoneName: 'short' }).split(' ').pop());
+    var start = new Date(ev.starts_at);
+    return ev.ends_at ? meetupTime.formatRange(start, new Date(ev.ends_at)) : meetupTime.format(start);
   }
 
   function empty(title, text) {
@@ -271,13 +277,17 @@ footer .wrap { max-width: 1120px; padding-block: 24px 40px; display: flex; justi
       h('p', { class: 'ev-title', text: ev.title }),
       h('p', { class: 'ev-when', text: when(ev) }),
       ev.description ? h('p', { class: 'ev-desc', text: ev.description }) : null,
-      h('p', { class: 'going' }, [h('b', { text: String(n) }), document.createTextNode(n === 1 ? 'person going' : 'people going')])
+      h('dl', { class: 'ev-place' }, [
+        h('dt', { text: 'Place' }),
+        h('dd', { text: ev.location?.trim() || 'To be announced' })
+      ]),
+      h('p', { class: 'going' }, [h('b', { text: String(n) }), document.createTextNode(n === 1 ? ' person going' : ' people going')])
     ]);
     if (events.length > 1) {
       var pick = h('div', { class: 'picker', role: 'group', 'aria-label': 'Upcoming meetups' });
       events.forEach(function (e) {
         pick.appendChild(h('button', { type: 'button', class: 'chip', 'aria-pressed': String(e === ev),
-          text: new Date(e.starts_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) + ' · ' + e.title,
+          text: meetupDay.format(new Date(e.starts_at)) + ' · ' + e.title,
           onclick: function () { selected = e; lastMsg = null; render(); } }));
       });
       info.appendChild(pick);

@@ -1,0 +1,18 @@
+# Secrets: never commit webhook URLs, API keys, or passwords
+.env
+.env.*
+*.secret
+secrets/
+webhook*.txt
+
+# OS and editor junk
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Dependencies and builds (for later)
+node_modules/
+dist/
+build/

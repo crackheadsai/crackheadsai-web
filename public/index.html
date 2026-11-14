@@ -1,330 +1,404 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Crackheads.ai</title>
-<meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Crackheads brings together people from every industry who are cracked about AI and ready to build.">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='96'/%3E%3Ccircle cx='256' cy='282' r='200' fill='%23fff'/%3E%3Cpath d='M190 50 252 184 182 222 262 390 330 218 270 184 322 50Z'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=IBM+Plex+Mono:wght@400;600&family=Permanent+Marker&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@900&family=IBM+Plex+Mono:wght@400;600&display=swap">
 <style>
-/* Layout: an exhibition-poster hero (giant type, an oversized cracked head bleeding off the edge, hairline captions), then hard black/white bands. Motion is the personality; color stays strictly black and white. */
+/* Layout: top nav (logo left; Meetup, AI news, Discord button right), a two-column hero (headline and blurb left, Discord CTA right), a scrolling strip of tool icons, the next meetup with an RSVP form, then the footer, black on white. */
 :root {
-  --bg: #fafaf7;
+  --bg: #ffffff;
   --fg: #0a0a0a;
-  --mute: #5d5d58;
-  --soft: #ececE6;
-  --line: #0a0a0a;
-  --inv-bg: #0a0a0a;
-  --inv-fg: #fafaf7;
-  --display: "Big Shoulders Display", "Impact", "Arial Narrow", sans-serif;
-  --body: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
-  --hand: "Permanent Marker", "Comic Sans MS", cursive;
-  --r: 18px;
+  --mute: #5a5a5a;
+  --display: "Big Shoulders Display", Impact, "Arial Narrow", sans-serif;
+  --body: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
 }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-  --bg: #090909; --fg: #f5f5f0; --mute: #a2a29b; --soft: #1a1a19; --line: #f5f5f0; --inv-bg: #f5f5f0; --inv-fg: #090909; color-scheme: dark;
-} }
-:root[data-theme="dark"] {
-  --bg: #090909; --fg: #f5f5f0; --mute: #a2a29b; --soft: #1a1a19; --line: #f5f5f0; --inv-bg: #f5f5f0; --inv-fg: #090909; color-scheme: dark;
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --bg: #0a0a0a; --fg: #f5f5f2; --mute: #a3a3a0; color-scheme: dark; }
 }
+:root[data-theme="dark"] { --bg: #0a0a0a; --fg: #f5f5f2; --mute: #a3a3a0; color-scheme: dark; }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 15px; line-height: 1.6; overflow-x: hidden; }
-.wrap { max-width: 1200px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.65; }
+.wrap { max-width: 720px; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
 a { color: inherit; }
-:focus-visible { outline: 3px solid var(--fg); outline-offset: 3px; }
-svg { display: block; }
+:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; }
 
-/* buttons: a crack draws across on hover */
-.btn {
-  position: relative; display: inline-flex; align-items: center; gap: 10px;
-  font-family: var(--display); font-weight: 900; font-size: 22px; letter-spacing: .03em; text-transform: uppercase; line-height: 1;
-  padding: 16px 26px; border-radius: 999px; border: 3px solid var(--fg);
-  background: var(--fg); color: var(--bg); text-decoration: none; overflow: hidden;
-  transition: transform .2s cubic-bezier(.2,.8,.2,1);
-}
-.btn.ghost { background: transparent; color: var(--fg); }
-.btn:hover { transform: translateY(-3px) rotate(-1.5deg); }
-.btn .crack { position: absolute; left: 8%; right: 8%; bottom: 6px; width: 84%; height: 12px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-dasharray: 160; stroke-dashoffset: 160; transition: stroke-dashoffset .45s ease; }
-.btn:hover .crack, .btn:focus-visible .crack { stroke-dashoffset: 0; }
-.btn.sm { font-size: 17px; padding: 10px 18px; border-width: 2px; }
+header .wrap { max-width: 1120px; display: flex; align-items: center; justify-content: space-between; gap: 12px 24px; flex-wrap: wrap; padding-block: 16px; }
+nav { display: flex; align-items: center; gap: 24px; }
+nav a { font-size: 14px; text-decoration: none; }
+nav a:not(.btn):hover { text-decoration: underline; text-underline-offset: 4px; }
+nav .btn { font-size: 17px; padding: 10px 18px; }
+.logo { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-weight: 900; font-size: 24px; text-transform: uppercase; text-decoration: none; letter-spacing: .02em; }
+.logo svg { width: 28px; height: 28px; fill: currentColor; }
 
-/* top bar */
-body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
-.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid color-mix(in srgb, var(--fg) 14%, transparent); }
-.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 12px; }
-.logo { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-weight: 900; font-size: 26px; letter-spacing: .02em; text-transform: uppercase; text-decoration: none; line-height: 1; }
-.logo .mark { width: 30px; height: 30px; fill: currentColor; transition: transform .5s cubic-bezier(.3,1.6,.5,1); }
-.logo:hover .mark { transform: rotate(-20deg) scale(1.1); }
-.top nav { display: flex; align-items: center; gap: 24px; font-size: 12px; text-transform: uppercase; letter-spacing: .14em; }
-.top nav a:not(.btn) { text-decoration: none; }
-.top nav a:not(.btn):hover { text-decoration: underline; text-underline-offset: 4px; }
-
-/* hero: an exhibition-poster composition. Huge solid type left, an oversized cracked head bleeding off the right edge, hairline frame with small mono captions. Type uses difference blending where it crosses the head. Motion is restrained: a masked type reveal and a slow drift. */
-.art { position: relative; isolation: isolate; overflow: hidden; height: clamp(560px, 58vw, 820px); background: var(--bg); --mx: 0; --my: 0; border-bottom: 1px solid var(--line); }
-.frame { position: absolute; inset: 0; z-index: 4; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; padding: 18px max(16px, env(safe-area-inset-right, 0px)) 18px max(16px, env(safe-area-inset-left, 0px)); font-size: 11px; text-transform: uppercase; letter-spacing: .2em; }
-.cap { display: flex; justify-content: space-between; align-items: center; gap: 16px; color: var(--fg); }
-.cap span:nth-child(2) { text-align: center; }
-.icons-row { display: flex; gap: 10px; align-items: center; }
-.icons-row svg { width: 26px; height: 26px; border-radius: 18.75%; box-shadow: 0 0 0 1px var(--line); filter: grayscale(1); }
-.head { position: absolute; z-index: 0; right: -7vw; top: 50%; width: clamp(340px, 66vw, 960px); aspect-ratio: 1; transform: translate(calc(var(--mx) * -10px), calc(-50% + var(--my) * -10px)) rotate(-8deg); animation: settle 1.6s cubic-bezier(.2,.8,.2,1) both; }
-.head svg { width: 100%; height: 100%; fill: var(--fg); }
-@keyframes settle { from { opacity: 0; scale: 1.06; } to { opacity: 1; scale: 1; } }
-.art h1 { position: absolute; z-index: 2; left: max(16px, env(safe-area-inset-left, 0px)); bottom: 9%; margin: 0; font-family: var(--display); font-weight: 900; text-transform: uppercase; font-size: clamp(110px, 17.5vw, 260px); line-height: .8; letter-spacing: -.02em; color: #fff; mix-blend-mode: difference; }
-.art h1 .ln { display: block; overflow: hidden; padding-bottom: .02em; }
-.art h1 .ln span { display: block; animation: reveal 1.1s cubic-bezier(.2,.8,.1,1) both; }
-.art h1 .ln + .ln span { animation-delay: .12s; }
-@keyframes reveal { from { transform: translateY(105%); } to { transform: none; } }
-.cross { position: absolute; z-index: 4; width: 14px; height: 14px; pointer-events: none; }
-.cross::before, .cross::after { content: ""; position: absolute; background: var(--fg); }
-.cross::before { left: 6px; top: 0; width: 1px; height: 14px; }
-.cross::after { top: 6px; left: 0; height: 1px; width: 14px; }
-.hero-foot { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 32px; align-items: end; padding-block: 40px 64px; }
-.lede { font-size: 16px; max-width: 58ch; margin: 0; }
-.ctas { display: flex; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }
-.note-hand { font-size: 11px; text-transform: uppercase; letter-spacing: .2em; display: block; text-align: right; margin-top: 16px; color: var(--mute); }
-
-/* tech marquee */
-.mq { background: var(--inv-bg); color: var(--inv-fg); overflow: hidden; padding-block: 18px; }
-.mq-label { font-size: 11px; text-transform: uppercase; letter-spacing: .2em; opacity: .65; margin-bottom: 10px; }
-.mq-track { display: flex; width: max-content; animation: roll 30s linear infinite; }
-.mq:hover .mq-track { animation-play-state: paused; }
-.mq-run { display: flex; align-items: center; }
-.tech { font-family: var(--display); font-weight: 900; font-size: clamp(34px, 5vw, 54px); text-transform: uppercase; letter-spacing: .02em; white-space: nowrap; padding: 0 28px; line-height: 1; }
-.sep { width: 44px; height: 44px; border-radius: 18.75%; flex: none; box-shadow: 0 0 0 2px var(--inv-fg); }
-@keyframes roll { to { transform: translateX(-50%); } }
-
-/* sections */
-section.block .wrap { padding-block: 88px; }
-h2 { font-family: var(--display); font-weight: 900; text-transform: uppercase; font-size: clamp(48px, 8vw, 104px); line-height: .88; margin: 0 0 14px; text-wrap: balance; }
-.sub { color: var(--mute); max-width: 58ch; margin: 0 0 40px; }
-
-/* RSVP */
-.rsvp { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 40px; align-items: start; }
-.event { background: var(--inv-bg); color: var(--inv-fg); border-radius: var(--r); padding: 32px; position: relative; overflow: hidden; }
-.event .tag { display: inline-block; font-size: 11px; text-transform: uppercase; letter-spacing: .18em; border: 1.5px solid var(--inv-fg); border-radius: 999px; padding: 4px 10px; }
-.event h3 { font-family: var(--display); font-weight: 900; font-size: clamp(40px, 5vw, 60px); text-transform: uppercase; line-height: .9; margin: 18px 0 20px; }
-.facts { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px 24px; margin: 0 0 26px; }
-.facts dt { font-size: 11px; text-transform: uppercase; letter-spacing: .16em; opacity: .65; }
-.facts dd { margin: 2px 0 0; font-weight: 600; }
-.count { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 8px; margin-bottom: 26px; font-variant-numeric: tabular-nums; }
-.count div { border: 2px solid var(--inv-fg); border-radius: 12px; padding: 12px 6px 8px; text-align: center; }
-.count b { display: block; font-family: var(--display); font-weight: 900; font-size: clamp(38px, 5vw, 58px); line-height: 1; }
-.count span { font-size: 10px; text-transform: uppercase; letter-spacing: .16em; opacity: .7; }
-.event .btn { background: var(--inv-fg); color: var(--inv-bg); border-color: var(--inv-fg); }
-.event .ghost-mark { position: absolute; right: -60px; top: -60px; width: 220px; height: 220px; fill: var(--inv-fg); opacity: .08; transform: rotate(18deg); }
-.ph { font-size: 12px; opacity: .65; margin: 14px 0 0; }
-.what { font-family: var(--display); font-weight: 700; font-size: clamp(26px, 3vw, 34px); line-height: 1.1; margin: 0 0 28px; text-wrap: balance; }
-.rules { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; border-top: 2px solid var(--line); }
-.rules li { display: grid; grid-template-columns: 56px minmax(0,1fr); gap: 18px; align-items: center; padding: 18px 0; border-bottom: 1px solid var(--line); }
-.rule-ic { width: 56px; height: 56px; border-radius: 18.75%; box-shadow: 0 0 0 2px var(--line); transition: transform .35s cubic-bezier(.3,1.6,.5,1); }
-.rules li:hover .rule-ic { transform: rotate(-10deg) scale(1.08); }
-.rules b { display: block; font-family: var(--display); font-weight: 900; font-size: 26px; text-transform: uppercase; line-height: 1; margin-bottom: 4px; }
-.rules span { font-size: 14px; color: var(--mute); }
-.rules-label { font-size: 12px; text-transform: uppercase; letter-spacing: .2em; margin: 0 0 12px; }
-
-/* news */
-.news-sec { background: var(--soft); }
-.news { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 20px; perspective: 1200px; }
-.news-card { background: var(--bg); border: 2px solid var(--line); border-radius: var(--r); padding: 24px; display: flex; flex-direction: column; gap: 12px; min-width: 0; transition: transform .45s cubic-bezier(.2,.8,.2,1), box-shadow .45s ease; transform-style: preserve-3d; }
-.news-card:hover { transform: rotateY(-8deg) rotateX(4deg) translateY(-6px); box-shadow: 10px 12px 0 var(--fg); }
-.news-top { display: flex; align-items: center; gap: 14px; }
-.news-ic { width: 52px; height: 52px; border-radius: 18.75%; flex: none; box-shadow: 0 0 0 2px var(--line); }
-.news-meta { display: flex; flex-direction: column; font-size: 11px; text-transform: uppercase; letter-spacing: .14em; }
-.news-meta span:first-child { font-weight: 600; }
-.news-meta span + span { color: var(--mute); }
-.news-card h3 { font-family: var(--display); font-weight: 900; font-size: 30px; line-height: .98; text-transform: uppercase; margin: 6px 0 0; text-wrap: balance; }
-.news-card p { margin: 0; font-size: 14px; color: var(--mute); flex: 1; }
-.news-link { font-size: 12px; text-transform: uppercase; letter-spacing: .14em; font-weight: 600; text-underline-offset: 4px; }
-.news-foot { font-size: 12px; color: var(--mute); margin-top: 20px; }
-
-/* footer */
-footer { background: var(--inv-bg); color: var(--inv-fg); }
-footer .wrap { padding-block: 72px 32px; display: grid; gap: 40px; }
-.foot-cta { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; }
-.foot-cta .big { font-family: var(--display); font-weight: 900; text-transform: uppercase; font-size: clamp(64px, 12vw, 168px); line-height: .82; margin: 0; }
-footer .btn { background: var(--inv-fg); color: var(--inv-bg); border-color: var(--inv-fg); }
-.banner { width: 100%; height: auto; border-radius: var(--r); box-shadow: 0 0 0 2px var(--inv-fg); }
-.foot-row { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 12px; text-transform: uppercase; letter-spacing: .14em; border-top: 1px solid color-mix(in srgb, var(--inv-fg) 30%, transparent); padding-top: 20px; }
-.foot-row nav { display: flex; gap: 20px; flex-wrap: wrap; }
-.foot-row a { text-decoration: none; }
-.foot-row a:hover { text-decoration: underline; text-underline-offset: 4px; }
-
-@media (max-width: 900px) {
-  .rsvp, .hero-foot { grid-template-columns: minmax(0,1fr); }
-  .ctas { justify-content: flex-start; }
-  .note-hand { text-align: left; }
-  .news { grid-template-columns: minmax(0,1fr); }
-}
-@media (max-width: 620px) {
-  .top nav a:not(.btn) { display: none; }
-  .logo { font-size: 22px; }
-  .art { height: 150vw; }
-  .art h1 { font-size: 25vw; bottom: 12%; }
-  .head { width: 108vw; right: -38vw; top: 40%; }
-  .cap span:nth-child(2) { display: none; }
-  .icons-row svg:nth-child(n+5) { display: none; }
-  section.block .wrap { padding-block: 64px; }
-  .event { padding: 22px; }
-  .facts { grid-template-columns: minmax(0,1fr); }
-  .count b { font-size: 34px; }
-  .sep { width: 34px; height: 34px; }
-}
+.hero .wrap { max-width: 1120px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 40px 64px; align-items: end; padding-block: 88px 72px; }
+h1 { font-family: var(--display); font-weight: 900; text-transform: uppercase; font-size: clamp(72px, 13vw, 160px); line-height: .85; margin: 0 0 28px; }
+.lede { margin: 0; max-width: 58ch; }
+.cta { display: grid; gap: 12px; justify-items: start; }
+.cta .btn { font-size: 24px; padding: 18px 30px; }
+.cta small { font-size: 13px; color: var(--mute); }
+.tools { padding-block: 56px 48px; overflow: hidden; }
+.tools-title { text-align: center; font-size: clamp(40px, 7vw, 72px); margin: 0 0 40px; padding-inline: 20px; }
+.marquee { display: flex; width: max-content; animation: scroll 32s linear infinite; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.tools:hover .marquee { animation-play-state: paused; }
+.marquee ul { display: flex; list-style: none; align-items: center; gap: 104px; margin: 0; padding: 0 52px; list-style: none; border: 0; }
+.marquee li { display: flex; align-items: center; gap: 12px; padding: 0; border: 0; font-family: var(--display); font-weight: 900; font-size: 30px; text-transform: uppercase; letter-spacing: .02em; white-space: nowrap; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.marquee svg { width: 56px; height: 56px; fill: currentColor; flex: none; }
+@keyframes scroll { to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  .mq-track, .head, .art h1 .ln span { animation: none; }
-  .btn, .news-card, .rule-ic, .logo .mark { transition: none; }
+  .marquee { animation: none; width: auto; -webkit-mask-image: none; mask-image: none; }
+  .marquee ul { flex-wrap: wrap; justify-content: center; gap: 24px 40px; }
+  .marquee ul + ul { display: none; }
 }
-</style>
+@media (max-width: 760px) { .hero .wrap { grid-template-columns: minmax(0, 1fr); padding-block: 56px 48px; } }
+.btn { display: inline-block; font-family: var(--display); font-weight: 900; font-size: 20px; text-transform: uppercase; letter-spacing: .03em; text-decoration: none; padding: 14px 24px; border-radius: 999px; background: var(--fg); color: var(--bg); }
+.btn:hover { opacity: .85; }
 
-<header class="top">
+h2 { font-family: var(--display); font-weight: 900; text-transform: uppercase; font-size: 32px; line-height: 1; margin: 72px 0 16px; }
+
+/* Meetup / RSVP */
+.meetup .wrap { max-width: 1120px; padding-block: 72px 96px; }
+.meetup h2 { text-align: center; font-size: clamp(40px, 7vw, 72px); margin: 0 0 40px; }
+.ev { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: start; }
+.ev-img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 16px; margin: 0 0 24px; display: block; }
+.ev-title { font-family: var(--display); font-weight: 900; text-transform: uppercase; font-size: clamp(36px, 5vw, 56px); line-height: .95; margin: 0 0 16px; }
+.ev-when { font-weight: 600; margin: 0 0 12px; }
+.ev-desc { margin: 0 0 20px; color: var(--mute); max-width: 52ch; }
+.going { margin: 0; font-variant-numeric: tabular-nums; }
+.going b { font-family: var(--display); font-weight: 900; font-size: 40px; line-height: 1; margin-right: 8px; }
+.picker { display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0 0; }
+.chip { font: inherit; font-size: 13px; color: var(--fg); background: transparent; border: 1.5px solid var(--fg); border-radius: 999px; padding: 6px 14px; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--fg); color: var(--bg); }
+.rsvp-form { display: grid; gap: 16px; }
+.fld { display: grid; gap: 6px; min-width: 0; }
+.fld label { font-size: 12px; text-transform: uppercase; letter-spacing: .14em; color: var(--mute); }
+.fld input { font: inherit; color: var(--fg); background: transparent; border: 1.5px solid var(--fg); border-radius: 12px; padding: 12px 14px; width: 100%; min-width: 0; }
+.fld input:focus { outline: 2px solid var(--fg); outline-offset: 2px; }
+.rsvp-form .btn { justify-self: start; border: 0; cursor: pointer; }
+.rsvp-form .btn[disabled] { opacity: .6; cursor: progress; }
+.msg { margin: 0; min-height: 1.6em; font-size: 14px; }
+.msg.ok { font-weight: 600; }
+.ev-empty { text-align: center; max-width: 52ch; margin: 0 auto; }
+.ev-empty p { margin: 0 0 24px; color: var(--mute); }
+@media (max-width: 760px) { .ev { grid-template-columns: minmax(0, 1fr); gap: 32px; } }
+
+/* AI news */
+.news .wrap { max-width: 1120px; padding-block: 72px 96px; }
+.news h2 { text-align: center; font-size: clamp(40px, 7vw, 72px); margin: 0 0 12px; }
+.news-status { text-align: center; color: var(--mute); font-size: 13px; margin: 0 0 40px; min-height: 1.6em; }
+.feed { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.post { border: 1.5px solid var(--fg); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; min-width: 0; }
+.media { aspect-ratio: 16 / 9; background: var(--fg); color: var(--bg); display: grid; place-items: center; overflow: hidden; }
+.media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.media .ph { display: flex; align-items: center; gap: 12px; font-family: var(--display); font-weight: 900; text-transform: uppercase; font-size: 28px; padding: 0 16px; text-align: center; }
+.media .ph img { width: 40px; height: 40px; object-fit: contain; border-radius: 8px; background: var(--bg); }
+.post-body { padding: 20px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.post-meta { margin: 0; font-size: 12px; text-transform: uppercase; letter-spacing: .14em; color: var(--mute); }
+.post-title { margin: 0; font-family: var(--display); font-weight: 900; text-transform: uppercase; font-size: 26px; line-height: 1; }
+.post-blurb { margin: 0; color: var(--mute); font-size: 14px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.more { margin-top: auto; align-self: start; font: inherit; font-weight: 600; font-size: 14px; color: var(--fg); background: none; border: 0; padding: 4px 0; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
+.show-more { display: block; margin: 40px auto 0; border: 0; cursor: pointer; }
+.show-more[hidden] { display: none; }
+.news-empty { text-align: center; max-width: 52ch; margin: 0 auto; color: var(--mute); }
+#post-dialog { width: min(640px, calc(100vw - 32px)); max-height: calc(100vh - 48px); padding: 0; border: 1.5px solid var(--fg); border-radius: 20px; background: var(--bg); color: var(--fg); }
+#post-dialog::backdrop { background: rgba(0, 0, 0, .6); }
+#post-dialog .close { position: absolute; top: 12px; right: 12px; width: 40px; height: 40px; border-radius: 999px; border: 0; background: var(--fg); color: var(--bg); font-size: 22px; line-height: 1; cursor: pointer; z-index: 1; }
+#post-dialog .post-body { padding: 24px; gap: 14px; }
+#post-dialog .post-title { font-size: clamp(30px, 5vw, 40px); }
+#post-dialog .post-blurb { -webkit-line-clamp: unset; display: block; font-size: 15px; }
+#post-dialog .btn { align-self: start; font-size: 17px; }
+.host { margin: 0; font-size: 12px; color: var(--mute); }
+@media (max-width: 1000px) { .feed { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 760px) { .feed { grid-template-columns: minmax(0, 1fr); } }
+
+@media (max-width: 480px) { nav { gap: 18px; } nav .btn { font-size: 15px; padding: 9px 14px; } }
+
+footer .wrap { max-width: 1120px; padding-block: 24px 40px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 13px; color: var(--mute); }
+</style>
+</head>
+<body>
+
+<header>
   <div class="wrap">
-    <a class="logo" href="#top"><svg class="mark" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path d="M294 104.2A176 176 0 1 1 212 105.6L240 152 194 198 244 252 220 298 252 352 276 292 298 246 252 196 302 148Z"/></svg>Crackheads.ai</a>
-    <nav aria-label="Sections">
-      <a href="#build-night">Next build night</a>
-      <a href="#news">AI news</a>
-      <a class="btn sm" href="https://discord.gg/fGbmwPsM93" target="_blank" rel="noopener">Join the Discord<svg class="crack" viewBox="0 0 100 20" preserveAspectRatio="none" aria-hidden="true"><path d="M0 12 14 6 22 14 36 4 48 13 60 7 72 15 84 5 100 11"/></svg></a>
+    <a class="logo" href="#top"><svg viewBox="0 0 512 512" aria-hidden="true"><path d="M294 104.2A176 176 0 1 1 212 105.6L240 152 194 198 244 252 220 298 252 352 276 292 298 246 252 196 302 148Z"/></svg>Crackheads.ai</a>
+    <nav aria-label="Main">
+      <a href="#meetup">Meetup</a>
+      <a href="#ai-news">AI news</a>
+      <a class="btn" href="https://discord.gg/fGbmwPsM93">Join the Discord</a>
     </nav>
   </div>
 </header>
 
 <main id="top">
   <section class="hero">
-    <div class="art" id="art">
-      <div class="head" aria-hidden="true"><svg class="big" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path d="M294 104.2A176 176 0 1 1 212 105.6L240 152 194 198 244 252 220 298 252 352 276 292 298 246 252 196 302 148Z"/></svg></div>
-      <h1 aria-label="Get cracked."><span class="ln" aria-hidden="true"><span>Get</span></span><span class="ln" aria-hidden="true"><span>Cracked.</span></span></h1>
-      <span class="cross" style="left:50%;top:22%" aria-hidden="true"></span>
-      <span class="cross" style="left:8%;top:40%" aria-hidden="true"></span>
-      <div class="frame" aria-hidden="true">
-        <div class="cap"><span>Crackheads.ai</span><span>Build nights for people who are cracked about AI</span><span>Est. 2026</span></div>
-        <div class="cap"><div class="icons-row"><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#000"/><circle cx="256" cy="276" r="176" fill="#fff"/><path d="M212 84 240 152 194 198 244 252 220 298 252 352 276 292 298 246 252 196 302 148 294 84Z" fill="#000"/></svg><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#000"/><path d="M370.9 159.6A150 150 0 1 0 370.9 352.4" fill="none" stroke="#fff" stroke-width="76"/><path d="M92 86 150 140 128 160 192 204 170 218 222 258" fill="none" stroke="#000" stroke-width="16" stroke-linejoin="miter"/></svg><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#000"/><path d="M120 170 220 256 120 342" fill="none" stroke="#fff" stroke-width="46"/><rect x="250" y="318" width="142" height="46" fill="#fff"/><path d="M96 124 180 206 158 226 262 318 244 336 336 424" fill="none" stroke="#000" stroke-width="12"/></svg><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#000"/><rect x="178" y="104" width="18" height="50" fill="#fff"/><rect x="178" y="358" width="18" height="50" fill="#fff"/><rect x="104" y="178" width="50" height="18" fill="#fff"/><rect x="358" y="178" width="50" height="18" fill="#fff"/><rect x="224" y="104" width="18" height="50" fill="#fff"/><rect x="224" y="358" width="18" height="50" fill="#fff"/><rect x="104" y="224" width="50" height="18" fill="#fff"/><rect x="358" y="224" width="50" height="18" fill="#fff"/><rect x="270" y="104" width="18" height="50" fill="#fff"/><rect x="270" y="358" width="18" height="50" fill="#fff"/><rect x="104" y="270" width="50" height="18" fill="#fff"/><rect x="358" y="270" width="50" height="18" fill="#fff"/><rect x="316" y="104" width="18" height="50" fill="#fff"/><rect x="316" y="358" width="18" height="50" fill="#fff"/><rect x="104" y="316" width="50" height="18" fill="#fff"/><rect x="358" y="316" width="50" height="18" fill="#fff"/><rect x="146" y="146" width="220" height="220" rx="22" fill="#fff"/><rect x="196" y="196" width="120" height="120" fill="none" stroke="#000" stroke-width="14"/><path d="M146 168 226 236 204 256 300 324 280 344 366 360" fill="none" stroke="#000" stroke-width="16"/></svg><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#000"/><path d="M256.0 76.0 303.0 207.3 442.4 211.4 332.1 296.7 371.2 430.6 256.0 352.0 140.8 430.6 179.9 296.7 69.6 211.4 209.0 207.3Z" fill="#fff"/><path d="M262 86 244 170 270 190 236 260 262 282 240 352" fill="none" stroke="#000" stroke-width="14"/></svg><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#000"/><path d="M96 384V178L176 266 256 138 336 266 416 178V384Z" fill="#fff"/><circle cx="96" cy="164" r="24" fill="#fff"/><circle cx="256" cy="120" r="24" fill="#fff"/><circle cx="416" cy="164" r="24" fill="#fff"/><rect x="96" y="326" width="320" height="14"/><path d="M256 150 240 212 266 238 244 300 262 326" fill="none" stroke="#000" stroke-width="14"/></svg></div><span>Scroll ↓</span></div>
-      </div>
-    </div>
-    <div class="wrap hero-foot">
-      <p class="lede">AI is changing the world, and it's changing fast. Crackheads brings together people from every industry who want to use it to its fullest. Developers, marketers, operations leaders, it doesn't matter what you do. If you're cracked about AI and ready to build, you belong here.</p>
+    <div class="wrap">
       <div>
-        <div class="ctas">
-          <a class="btn" href="https://discord.gg/fGbmwPsM93" target="_blank" rel="noopener">Join the Discord<svg class="crack" viewBox="0 0 100 20" preserveAspectRatio="none" aria-hidden="true"><path d="M0 12 14 6 22 14 36 4 48 13 60 7 72 15 84 5 100 11"/></svg></a>
-          <a class="btn ghost" href="#build-night">RSVP<svg class="crack" viewBox="0 0 100 20" preserveAspectRatio="none" aria-hidden="true"><path d="M0 12 14 6 22 14 36 4 48 13 60 7 72 15 84 5 100 11"/></svg></a>
-        </div>
-        <span class="note-hand">No suits. Bring a laptop.</span>
+        <h1>Get cracked.</h1>
+        <p class="lede">AI is changing the world, and it's changing fast. Crackheads brings together people from every industry who want to use it to its fullest. Developers, marketers, operations leaders, it doesn't matter what you do. If you're cracked about AI and ready to build, you belong here.</p>
+      </div>
+      <div class="cta">
+        <a class="btn" href="https://discord.gg/fGbmwPsM93">Join the Discord</a>
+        <small>Free to join. Build nights are posted there.</small>
       </div>
     </div>
   </section>
 
-  <div class="mq">
-    <div class="wrap"><div class="mq-label">What we build with</div></div>
-    <div class="mq-track"><div class="mq-run"><span class="tech">Claude</span><svg class="sep" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#000"/><path d="M256.0 76.0 303.0 207.3 442.4 211.4 332.1 296.7 371.2 430.6 256.0 352.0 140.8 430.6 179.9 296.7 69.6 211.4 209.0 207.3Z" fill="#fff"/><path d="M262 86 244 170 270 190 236 260 262 282 240 352" fill="none" stroke="#000" stroke-width="14"/></svg><span class="tech">ChatGPT</span><svg class="sep" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><circle cx="256" cy="256" r="248" fill="#000"/><circle cx="256" cy="256" r="208" fill="none" stroke="#fff" stroke-width="14" stroke-dasharray="26 14"/><path d="M296 92 176 280H246L210 420 340 220H266L316 92Z" fill="#fff"/></svg><span class="tech">Cursor</span><svg class="sep" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#000"/><path d="M370.9 159.6A150 150 0 1 0 370.9 352.4" fill="none" stroke="#fff" stroke-width="76"/><path d="M92 86 150 140 128 160 192 204 170 218 222 258" fill="none" stroke="#000" stroke-width="16" stroke-linejoin="miter"/></svg><span class="tech">GitHub</span><svg class="sep" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#000"/><rect x="178" y="98" width="36" height="36" fill="#fff"/><rect x="218" y="98" width="36" height="36" fill="#fff"/><rect x="298" y="98" width="36" height="36" fill="#fff"/><rect x="338" y="98" width="36" height="36" fill="#fff"/><rect x="138" y="138" width="36" height="36" fill="#fff"/><rect x="178" y="138" width="36" height="36" fill="#fff"/><rect x="258" y="138" width="36" height="36" fill="#fff"/><rect x="298" y="138" width="36" height="36" fill="#fff"/><rect x="338" y="138" width="36" height="36" fill="#fff"/><rect x="378" y="138" width="36" height="36" fill="#fff"/><rect x="98" y="178" width="36" height="36" fill="#fff"/><rect x="138" y="178" width="36" height="36" fill="#fff"/><rect x="178" y="178" width="36" height="36" fill="#fff"/><rect x="98" y="218" width="36" height="36" fill="#fff"/><rect x="138" y="218" width="36" height="36" fill="#fff"/><rect x="178" y="218" width="36" height="36" fill="#fff"/><rect x="98" y="258" width="36" height="36" fill="#fff"/><rect x="138" y="258" width="36" height="36" fill="#fff"/><rect x="178" y="258" width="36" height="36" fill="#fff"/><rect x="98" y="298" width="36" height="36" fill="#fff"/><rect x="138" y="298" width="36" height="36" fill="#fff"/><rect x="178" y="298" width="36" height="36" fill="#fff"/><rect x="138" y="338" width="36" height="36" fill="#fff"/><rect x="178" y="338" width="36" height="36" fill="#fff"/><rect x="218" y="338" width="36" height="36" fill="#fff"/><rect x="258" y="338" width="36" height="36" fill="#fff"/><rect x="298" y="338" width="36" height="36" fill="#fff"/><rect x="338" y="338" width="36" height="36" fill="#fff"/><rect x="378" y="338" width="36" height="36" fill="#fff"/><rect x="178" y="378" width="36" height="36" fill="#fff"/><rect x="218" y="378" width="36" height="36" fill="#fff"/><rect x="258" y="378" width="36" height="36" fill="#fff"/><rect x="298" y="378" width="36" height="36" fill="#fff"/><rect x="338" y="378" width="36" height="36" fill="#fff"/></svg><span class="tech">Figma</span><svg class="sep" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#000"/><rect x="178" y="104" width="18" height="50" fill="#fff"/><rect x="178" y="358" width="18" height="50" fill="#fff"/><rect x="104" y="178" width="50" height="18" fill="#fff"/><rect x="358" y="178" width="50" height="18" fill="#fff"/><rect x="224" y="104" width="18" height="50" fill="#fff"/><rect x="224" y="358" width="18" height="50" fill="#fff"/><rect x="104" y="224" width="50" height="18" fill="#fff"/><rect x="358" y="224" width="50" height="18" fill="#fff"/><rect x="270" y="104" width="18" height="50" fill="#fff"/><rect x="270" y="358" width="18" height="50" fill="#fff"/><rect x="104" y="270" width="50" height="18" fill="#fff"/><rect x="358" y="270" width="50" height="18" fill="#fff"/><rect x="316" y="104" width="18" height="50" fill="#fff"/><rect x="316" y="358" width="18" height="50" fill="#fff"/><rect x="104" y="316" width="50" height="18" fill="#fff"/><rect x="358" y="316" width="50" height="18" fill="#fff"/><rect x="146" y="146" width="220" height="220" rx="22" fill="#fff"/><rect x="196" y="196" width="120" height="120" fill="none" stroke="#000" stroke-width="14"/><path d="M146 168 226 236 204 256 300 324 280 344 366 360" fill="none" stroke="#000" stroke-width="16"/></svg><span class="tech">Discord</span><svg class="sep" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#000"/><circle cx="256" cy="276" r="176" fill="#fff"/><path d="M212 84 240 152 194 198 244 252 220 298 252 352 276 292 298 246 252 196 302 148 294 84Z" fill="#000"/></svg></div><div class="mq-run" aria-hidden="true"><span class="tech">Claude</span><svg class="sep" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#000"/><path d="M256.0 76.0 303.0 207.3 442.4 211.4 332.1 296.7 371.2 430.6 256.0 352.0 140.8 430.6 179.9 296.7 69.6 211.4 209.0 207.3Z" fill="#fff"/><path d="M262 86 244 170 270 190 236 260 262 282 240 352" fill="none" stroke="#000" stroke-width="14"/></svg><span class="tech">ChatGPT</span><svg class="sep" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><circle cx="256" cy="256" r="248" fill="#000"/><circle cx="256" cy="256" r="208" fill="none" stroke="#fff" stroke-width="14" stroke-dasharray="26 14"/><path d="M296 92 176 280H246L210 420 340 220H266L316 92Z" fill="#fff"/></svg><span class="tech">Cursor</span><svg class="sep" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#000"/><path d="M370.9 159.6A150 150 0 1 0 370.9 352.4" fill="none" stroke="#fff" stroke-width="76"/><path d="M92 86 150 140 128 160 192 204 170 218 222 258" fill="none" stroke="#000" stroke-width="16" stroke-linejoin="miter"/></svg><span class="tech">GitHub</span><svg class="sep" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#000"/><rect x="178" y="98" width="36" height="36" fill="#fff"/><rect x="218" y="98" width="36" height="36" fill="#fff"/><rect x="298" y="98" width="36" height="36" fill="#fff"/><rect x="338" y="98" width="36" height="36" fill="#fff"/><rect x="138" y="138" width="36" height="36" fill="#fff"/><rect x="178" y="138" width="36" height="36" fill="#fff"/><rect x="258" y="138" width="36" height="36" fill="#fff"/><rect x="298" y="138" width="36" height="36" fill="#fff"/><rect x="338" y="138" width="36" height="36" fill="#fff"/><rect x="378" y="138" width="36" height="36" fill="#fff"/><rect x="98" y="178" width="36" height="36" fill="#fff"/><rect x="138" y="178" width="36" height="36" fill="#fff"/><rect x="178" y="178" width="36" height="36" fill="#fff"/><rect x="98" y="218" width="36" height="36" fill="#fff"/><rect x="138" y="218" width="36" height="36" fill="#fff"/><rect x="178" y="218" width="36" height="36" fill="#fff"/><rect x="98" y="258" width="36" height="36" fill="#fff"/><rect x="138" y="258" width="36" height="36" fill="#fff"/><rect x="178" y="258" width="36" height="36" fill="#fff"/><rect x="98" y="298" width="36" height="36" fill="#fff"/><rect x="138" y="298" width="36" height="36" fill="#fff"/><rect x="178" y="298" width="36" height="36" fill="#fff"/><rect x="138" y="338" width="36" height="36" fill="#fff"/><rect x="178" y="338" width="36" height="36" fill="#fff"/><rect x="218" y="338" width="36" height="36" fill="#fff"/><rect x="258" y="338" width="36" height="36" fill="#fff"/><rect x="298" y="338" width="36" height="36" fill="#fff"/><rect x="338" y="338" width="36" height="36" fill="#fff"/><rect x="378" y="338" width="36" height="36" fill="#fff"/><rect x="178" y="378" width="36" height="36" fill="#fff"/><rect x="218" y="378" width="36" height="36" fill="#fff"/><rect x="258" y="378" width="36" height="36" fill="#fff"/><rect x="298" y="378" width="36" height="36" fill="#fff"/><rect x="338" y="378" width="36" height="36" fill="#fff"/></svg><span class="tech">Figma</span><svg class="sep" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#000"/><rect x="178" y="104" width="18" height="50" fill="#fff"/><rect x="178" y="358" width="18" height="50" fill="#fff"/><rect x="104" y="178" width="50" height="18" fill="#fff"/><rect x="358" y="178" width="50" height="18" fill="#fff"/><rect x="224" y="104" width="18" height="50" fill="#fff"/><rect x="224" y="358" width="18" height="50" fill="#fff"/><rect x="104" y="224" width="50" height="18" fill="#fff"/><rect x="358" y="224" width="50" height="18" fill="#fff"/><rect x="270" y="104" width="18" height="50" fill="#fff"/><rect x="270" y="358" width="18" height="50" fill="#fff"/><rect x="104" y="270" width="50" height="18" fill="#fff"/><rect x="358" y="270" width="50" height="18" fill="#fff"/><rect x="316" y="104" width="18" height="50" fill="#fff"/><rect x="316" y="358" width="18" height="50" fill="#fff"/><rect x="104" y="316" width="50" height="18" fill="#fff"/><rect x="358" y="316" width="50" height="18" fill="#fff"/><rect x="146" y="146" width="220" height="220" rx="22" fill="#fff"/><rect x="196" y="196" width="120" height="120" fill="none" stroke="#000" stroke-width="14"/><path d="M146 168 226 236 204 256 300 324 280 344 366 360" fill="none" stroke="#000" stroke-width="16"/></svg><span class="tech">Discord</span><svg class="sep" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#000"/><circle cx="256" cy="276" r="176" fill="#fff"/><path d="M212 84 240 152 194 198 244 252 220 298 252 352 276 292 298 246 252 196 302 148 294 84Z" fill="#000"/></svg></div></div>
-  </div>
-
-  <section class="block" id="build-night">
-    <div class="wrap">
-      <h2>Next build night</h2>
-      <p class="sub">Grab a seat, bring an idea or join someone else's. RSVP happens in the Discord.</p>
-      <div class="rsvp">
-        <div class="event">
-          <svg class="ghost-mark" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path d="M294 104.2A176 176 0 1 1 212 105.6L240 152 194 198 244 252 220 298 252 352 276 292 298 246 252 196 302 148Z"/></svg>
-          <span class="tag">Build night 01</span>
-          <h3>Thursday, Dec 4</h3>
-          <dl class="facts">
-            <div><dt>Time</dt><dd>6:00 to 9:00 PM CT</dd></div>
-            <div><dt>Place</dt><dd>Venue announced in Discord</dd></div>
-            <div><dt>Spots</dt><dd>30 seats</dd></div>
-            <div><dt>Bring</dt><dd>Laptop and a project, or nothing</dd></div>
-          </dl>
-          <div class="count" id="count" role="timer" aria-label="Time until build night">
-            <div><b id="c-d">--</b><span>Days</span></div>
-            <div><b id="c-h">--</b><span>Hours</span></div>
-            <div><b id="c-m">--</b><span>Min</span></div>
-            <div><b id="c-s">--</b><span>Sec</span></div>
-          </div>
-          <a class="btn" href="https://discord.gg/fGbmwPsM93" target="_blank" rel="noopener">RSVP in the Discord<svg class="crack" viewBox="0 0 100 20" preserveAspectRatio="none" aria-hidden="true"><path d="M0 12 14 6 22 14 36 4 48 13 60 7 72 15 84 5 100 11"/></svg></a>
-          <p class="ph">Date, time and seat count are placeholders until the first build night is set.</p>
-        </div>
-        <div>
-          <p class="what">At a build night you work on Crackheads' own tools, team up on a project, or ship your own. Websites, games, system designs, whatever you bring.</p>
-          <p class="rules-label">House rules</p>
-          <ul class="rules"><li><svg class="rule-ic" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#000"/><path d="M96 384V178L176 266 256 138 336 266 416 178V384Z" fill="#fff"/><circle cx="96" cy="164" r="24" fill="#fff"/><circle cx="256" cy="120" r="24" fill="#fff"/><circle cx="416" cy="164" r="24" fill="#fff"/><rect x="96" y="326" width="320" height="14"/><path d="M256 150 240 212 266 238 244 300 262 326" fill="none" stroke="#000" stroke-width="14"/></svg><div><b>Know a lot? Invest in the group.</b><span>If you know a lot, it’s your job to help the people around you level up.</span></div></li><li><svg class="rule-ic" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#000"/><rect x="92" y="92" width="328" height="328" rx="58" fill="#fff"/><rect x="132" y="112" width="248" height="244" rx="38" fill="#fff" stroke="#000" stroke-width="10"/><path d="M302 184A68 68 0 1 0 302 284" fill="none" stroke="#000" stroke-width="36"/><path d="M206 112 226 168 206 186 236 230" fill="none" stroke="#fff" stroke-width="12"/></svg><div><b>New to this? Come ready to learn.</b><span>If you don’t know anything yet, it’s your job to show up curious and ask.</span></div></li><li><svg class="rule-ic" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#000"/><circle cx="256" cy="256" r="182" fill="#fff"/><ellipse cx="198" cy="218" rx="22" ry="36"/><ellipse cx="314" cy="218" rx="22" ry="36"/><path d="M164 296Q256 396 348 296" fill="none" stroke="#000" stroke-width="28" stroke-linecap="round"/><path d="M272 70 250 118 278 140 246 190" fill="none" stroke="#000" stroke-width="14"/></svg><div><b>Keep it fun.</b><span>Real work, no suits. If you’re dressing up for this, it’s probably not your event.</span></div></li></ul>
-        </div>
-      </div>
+  <section class="tools" aria-labelledby="tools-title">
+    <h2 class="tools-title" id="tools-title">What we build with</h2>
+    <div class="marquee">
+      <ul><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></svg><span class="sr">ChatGPT</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4.7144 15.9555 4.7174-2.6471.079-.2307-.079-.1275h-.2307l-.7893-.0486-2.6956-.0729-2.3375-.0971-2.2646-.1214-.5707-.1215-.5343-.7042.0546-.3522.4797-.3218.686.0608 1.5179.1032 2.2767.1578 1.6514.0972 2.4468.255h.3886l.0546-.1579-.1336-.0971-.1032-.0972L6.973 9.8356l-2.55-1.6879-1.3356-.9714-.7225-.4918-.3643-.4614-.1578-1.0078.6557-.7225.8803.0607.2246.0607.8925.686 1.9064 1.4754 2.4893 1.8336.3643.3035.1457-.1032.0182-.0728-.164-.2733-1.3539-2.4467-1.445-2.4893-.6435-1.032-.17-.6194c-.0607-.255-.1032-.4674-.1032-.7285L6.287.1335 6.6997 0l.9957.1336.419.3642.6192 1.4147 1.0018 2.2282 1.5543 3.0296.4553.8985.2429.8318.091.255h.1579v-.1457l.1275-1.706.2368-2.0947.2307-2.6957.0789-.7589.3764-.9107.7468-.4918.5828.2793.4797.686-.0668.4433-.2853 1.8517-.5586 2.9021-.3643 1.9429h.2125l.2429-.2429.9835-1.3053 1.6514-2.0643.7286-.8196.85-.9046.5464-.4311h1.0321l.759 1.1293-.34 1.1657-1.0625 1.3478-.8804 1.1414-1.2628 1.7-.7893 1.36.0729.1093.1882-.0183 2.8535-.607 1.5421-.2794 1.8396-.3157.8318.3886.091.3946-.3278.8075-1.967.4857-2.3072.4614-3.4364.8136-.0425.0304.0486.0607 1.5482.1457.6618.0364h1.621l3.0175.2247.7892.522.4736.6376-.079.4857-1.2142.6193-1.6393-.3886-3.825-.9107-1.3113-.3279h-.1822v.1093l1.0929 1.0686 2.0035 1.8092 2.5075 2.3314.1275.5768-.3218.4554-.34-.0486-2.2039-1.6575-.85-.7468-1.9246-1.621h-.1275v.17l.4432.6496 2.3436 3.5214.1214 1.0807-.17.3521-.6071.2125-.6679-.1214-1.3721-1.9246L14.38 17.959l-1.1414-1.9428-.1397.079-.674 7.2552-.3156.3703-.7286.2793-.6071-.4614-.3218-.7468.3218-1.4753.3886-1.9246.3157-1.53.2853-1.9004.17-.6314-.0121-.0425-.1397.0182-1.4328 1.9672-2.1796 2.9446-1.7243 1.8456-.4128.164-.7164-.3704.0667-.6618.4008-.5889 2.386-3.0357 1.4389-1.882.929-1.0868-.0062-.1579h-.0546l-6.3385 4.1164-1.1293.1457-.4857-.4554.0608-.7467.2307-.2429 1.9064-1.3114Z"/></svg><span class="sr">Claude</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg><span class="sr">Discord</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.886 4.18A11.982 11.982 0 0 1 11.99 0C18.624 0 24 5.376 24 12.009c0 3.64-1.62 6.903-4.18 9.105L2.887 4.18ZM1.817 5.626l16.556 16.556c-.524.33-1.075.62-1.65.866L.951 7.277c.247-.575.537-1.126.866-1.65ZM.322 9.163l14.515 14.515c-.71.172-1.443.282-2.195.322L0 11.358a12 12 0 0 1 .322-2.195Zm-.17 4.862 9.823 9.824a12.02 12.02 0 0 1-9.824-9.824Z"/></svg><span class="sr">Linear</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313zM8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312zM18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312zM15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg><span class="sr">Slack</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.852 8.981h-4.588V0h4.588c2.476 0 4.49 2.014 4.49 4.49s-2.014 4.491-4.49 4.491zM12.735 7.51h3.117c1.665 0 3.019-1.355 3.019-3.019s-1.355-3.019-3.019-3.019h-3.117V7.51zm0 1.471H8.148c-2.476 0-4.49-2.014-4.49-4.49S5.672 0 8.148 0h4.588v8.981zm-4.587-7.51c-1.665 0-3.019 1.355-3.019 3.019s1.354 3.02 3.019 3.02h3.117V1.471H8.148zm4.587 15.019H8.148c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.49 4.49-4.49h4.588v8.98zM8.148 8.981c-1.665 0-3.019 1.355-3.019 3.019s1.355 3.019 3.019 3.019h3.117V8.981H8.148zM8.172 24c-2.489 0-4.515-2.014-4.515-4.49s2.014-4.49 4.49-4.49h4.588v4.441c0 2.503-2.047 4.539-4.563 4.539zm-.024-7.51a3.023 3.023 0 0 0-3.019 3.019c0 1.665 1.365 3.019 3.044 3.019 1.705 0 3.093-1.376 3.093-3.068v-2.97H8.148zm7.704 0h-.098c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.49 4.49-4.49h.098c2.476 0 4.49 2.014 4.49 4.49s-2.014 4.49-4.49 4.49zm-.097-7.509c-1.665 0-3.019 1.355-3.019 3.019s1.355 3.019 3.019 3.019h.098c1.665 0 3.019-1.355 3.019-3.019s-1.355-3.019-3.019-3.019h-.098z"/></svg><span class="sr">Figma</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg><span class="sr">GitHub</span></li></ul>
+      <ul aria-hidden="true"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></svg><span class="sr">ChatGPT</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4.7144 15.9555 4.7174-2.6471.079-.2307-.079-.1275h-.2307l-.7893-.0486-2.6956-.0729-2.3375-.0971-2.2646-.1214-.5707-.1215-.5343-.7042.0546-.3522.4797-.3218.686.0608 1.5179.1032 2.2767.1578 1.6514.0972 2.4468.255h.3886l.0546-.1579-.1336-.0971-.1032-.0972L6.973 9.8356l-2.55-1.6879-1.3356-.9714-.7225-.4918-.3643-.4614-.1578-1.0078.6557-.7225.8803.0607.2246.0607.8925.686 1.9064 1.4754 2.4893 1.8336.3643.3035.1457-.1032.0182-.0728-.164-.2733-1.3539-2.4467-1.445-2.4893-.6435-1.032-.17-.6194c-.0607-.255-.1032-.4674-.1032-.7285L6.287.1335 6.6997 0l.9957.1336.419.3642.6192 1.4147 1.0018 2.2282 1.5543 3.0296.4553.8985.2429.8318.091.255h.1579v-.1457l.1275-1.706.2368-2.0947.2307-2.6957.0789-.7589.3764-.9107.7468-.4918.5828.2793.4797.686-.0668.4433-.2853 1.8517-.5586 2.9021-.3643 1.9429h.2125l.2429-.2429.9835-1.3053 1.6514-2.0643.7286-.8196.85-.9046.5464-.4311h1.0321l.759 1.1293-.34 1.1657-1.0625 1.3478-.8804 1.1414-1.2628 1.7-.7893 1.36.0729.1093.1882-.0183 2.8535-.607 1.5421-.2794 1.8396-.3157.8318.3886.091.3946-.3278.8075-1.967.4857-2.3072.4614-3.4364.8136-.0425.0304.0486.0607 1.5482.1457.6618.0364h1.621l3.0175.2247.7892.522.4736.6376-.079.4857-1.2142.6193-1.6393-.3886-3.825-.9107-1.3113-.3279h-.1822v.1093l1.0929 1.0686 2.0035 1.8092 2.5075 2.3314.1275.5768-.3218.4554-.34-.0486-2.2039-1.6575-.85-.7468-1.9246-1.621h-.1275v.17l.4432.6496 2.3436 3.5214.1214 1.0807-.17.3521-.6071.2125-.6679-.1214-1.3721-1.9246L14.38 17.959l-1.1414-1.9428-.1397.079-.674 7.2552-.3156.3703-.7286.2793-.6071-.4614-.3218-.7468.3218-1.4753.3886-1.9246.3157-1.53.2853-1.9004.17-.6314-.0121-.0425-.1397.0182-1.4328 1.9672-2.1796 2.9446-1.7243 1.8456-.4128.164-.7164-.3704.0667-.6618.4008-.5889 2.386-3.0357 1.4389-1.882.929-1.0868-.0062-.1579h-.0546l-6.3385 4.1164-1.1293.1457-.4857-.4554.0608-.7467.2307-.2429 1.9064-1.3114Z"/></svg><span class="sr">Claude</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg><span class="sr">Discord</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.886 4.18A11.982 11.982 0 0 1 11.99 0C18.624 0 24 5.376 24 12.009c0 3.64-1.62 6.903-4.18 9.105L2.887 4.18ZM1.817 5.626l16.556 16.556c-.524.33-1.075.62-1.65.866L.951 7.277c.247-.575.537-1.126.866-1.65ZM.322 9.163l14.515 14.515c-.71.172-1.443.282-2.195.322L0 11.358a12 12 0 0 1 .322-2.195Zm-.17 4.862 9.823 9.824a12.02 12.02 0 0 1-9.824-9.824Z"/></svg><span class="sr">Linear</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313zM8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312zM18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312zM15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg><span class="sr">Slack</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.852 8.981h-4.588V0h4.588c2.476 0 4.49 2.014 4.49 4.49s-2.014 4.491-4.49 4.491zM12.735 7.51h3.117c1.665 0 3.019-1.355 3.019-3.019s-1.355-3.019-3.019-3.019h-3.117V7.51zm0 1.471H8.148c-2.476 0-4.49-2.014-4.49-4.49S5.672 0 8.148 0h4.588v8.981zm-4.587-7.51c-1.665 0-3.019 1.355-3.019 3.019s1.354 3.02 3.019 3.02h3.117V1.471H8.148zm4.587 15.019H8.148c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.49 4.49-4.49h4.588v8.98zM8.148 8.981c-1.665 0-3.019 1.355-3.019 3.019s1.355 3.019 3.019 3.019h3.117V8.981H8.148zM8.172 24c-2.489 0-4.515-2.014-4.515-4.49s2.014-4.49 4.49-4.49h4.588v4.441c0 2.503-2.047 4.539-4.563 4.539zm-.024-7.51a3.023 3.023 0 0 0-3.019 3.019c0 1.665 1.365 3.019 3.044 3.019 1.705 0 3.093-1.376 3.093-3.068v-2.97H8.148zm7.704 0h-.098c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.49 4.49-4.49h.098c2.476 0 4.49 2.014 4.49 4.49s-2.014 4.49-4.49 4.49zm-.097-7.509c-1.665 0-3.019 1.355-3.019 3.019s1.355 3.019 3.019 3.019h.098c1.665 0 3.019-1.355 3.019-3.019s-1.355-3.019-3.019-3.019h-.098z"/></svg><span class="sr">Figma</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg><span class="sr">GitHub</span></li></ul>
     </div>
   </section>
 
-  <section class="block news-sec" id="news">
+  <section class="meetup" id="meetup" aria-labelledby="meetup-title">
     <div class="wrap">
-      <h2>Top AI news</h2>
-      <p class="sub">Three stories worth talking about at the next build night.</p>
-      <div class="news"><article class="news-card">
-  <div class="news-top"><svg class="news-ic" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#000"/><path d="M120 170 220 256 120 342" fill="none" stroke="#fff" stroke-width="46"/><rect x="250" y="318" width="142" height="46" fill="#fff"/><path d="M96 124 180 206 158 226 262 318 244 336 336 424" fill="none" stroke="#000" stroke-width="12"/></svg><div class="news-meta"><span>Edge0</span><span>Nov 12, 2026</span></div></div>
-  <h3>An open 145B agent model built to run on your laptop</h3>
-  <p>Big open weights you can run locally. Worth a build-night test drive if you have the GPU for it.</p>
-  <a class="news-link" href="https://explainx.ai/catch-up-on-ai/2026-11-13" target="_blank" rel="noopener">Read the story<span aria-hidden="true"> ↗</span></a>
-</article><article class="news-card">
-  <div class="news-top"><svg class="news-ic" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#000"/><rect x="178" y="104" width="18" height="50" fill="#fff"/><rect x="178" y="358" width="18" height="50" fill="#fff"/><rect x="104" y="178" width="50" height="18" fill="#fff"/><rect x="358" y="178" width="50" height="18" fill="#fff"/><rect x="224" y="104" width="18" height="50" fill="#fff"/><rect x="224" y="358" width="18" height="50" fill="#fff"/><rect x="104" y="224" width="50" height="18" fill="#fff"/><rect x="358" y="224" width="50" height="18" fill="#fff"/><rect x="270" y="104" width="18" height="50" fill="#fff"/><rect x="270" y="358" width="18" height="50" fill="#fff"/><rect x="104" y="270" width="50" height="18" fill="#fff"/><rect x="358" y="270" width="50" height="18" fill="#fff"/><rect x="316" y="104" width="18" height="50" fill="#fff"/><rect x="316" y="358" width="18" height="50" fill="#fff"/><rect x="104" y="316" width="50" height="18" fill="#fff"/><rect x="358" y="316" width="50" height="18" fill="#fff"/><rect x="146" y="146" width="220" height="220" rx="22" fill="#fff"/><rect x="196" y="196" width="120" height="120" fill="none" stroke="#000" stroke-width="14"/><path d="M146 168 226 236 204 256 300 324 280 344 366 360" fill="none" stroke="#000" stroke-width="16"/></svg><div class="news-meta"><span>Retell</span><span>Nov 13, 2026</span></div></div>
-  <h3>Tell-1, a voice model for live contact-center calls</h3>
-  <p>Voice agents keep getting cheaper. Ops and support folks, this one is for you.</p>
-  <a class="news-link" href="https://explainx.ai/catch-up-on-ai/2026-11-13" target="_blank" rel="noopener">Read the story<span aria-hidden="true"> ↗</span></a>
-</article><article class="news-card">
-  <div class="news-top"><svg class="news-ic" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><circle cx="256" cy="256" r="248" fill="#000"/><circle cx="256" cy="256" r="208" fill="none" stroke="#fff" stroke-width="14" stroke-dasharray="26 14"/><path d="M296 92 176 280H246L210 420 340 220H266L316 92Z" fill="#fff"/></svg><div class="news-meta"><span>Meta</span><span>Nov 12, 2026</span></div></div>
-  <h3>Muse can now place outbound calls to businesses for paid US subscribers</h3>
-  <p>Agents that pick up the phone for you are here. Time to think about what that does to your funnel.</p>
-  <a class="news-link" href="https://explainx.ai/catch-up-on-ai/2026-11-13" target="_blank" rel="noopener">Read the story<span aria-hidden="true"> ↗</span></a>
-</article></div>
-      <p class="news-foot">Picked from the explainx.ai roundup for November 13, 2026.</p>
+      <h2 id="meetup-title">Next meetup</h2>
+      <div id="ev" aria-live="polite" aria-busy="true"><p class="ev-empty">Loading the next meetup&hellip;</p></div>
+    </div>
+  </section>
+  <section class="news" id="ai-news" aria-labelledby="news-title">
+    <div class="wrap">
+      <h2 id="news-title">Latest in AI</h2>
+      <p class="news-status" id="news-status" role="status"></p>
+      <ul class="feed" id="feed" aria-busy="true"></ul>
+      <button class="btn show-more" id="show-more" type="button" hidden>Show more</button>
     </div>
   </section>
 </main>
 
 <footer>
   <div class="wrap">
-    <div class="foot-cta">
-      <p class="big">Get<br>cracked.</p>
-      <a class="btn" href="https://discord.gg/fGbmwPsM93" target="_blank" rel="noopener">Join the Discord<svg class="crack" viewBox="0 0 100 20" preserveAspectRatio="none" aria-hidden="true"><path d="M0 12 14 6 22 14 36 4 48 13 60 7 72 15 84 5 100 11"/></svg></a>
-    </div>
-    <svg class="banner" role="img" aria-label="Crackheads.ai, Get cracked." xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 500">
-
-<rect width="1500" height="500" fill="#000"/>
-<path transform="translate(139.1 54.0) scale(0.7102)" d="M294 104.2A176 176 0 1 1 212 105.6L240 152 194 198 244 252 220 298 252 352 276 292 298 246 252 196 302 148Z" fill="#fff"/>
-<path d="M536.5849999999999 259.4Q520.765 259.4 514.0799999999999 252.89Q507.3949999999999 246.38 507.04499999999996 231.26Q506.97499999999997 225.45 506.905 217.82Q506.8349999999999 210.19 506.8349999999999 201.965Q506.8349999999999 193.74 506.905 186.075Q506.97499999999997 178.41 507.04499999999996 172.45999999999998Q507.25499999999994 159.64999999999998 514.2199999999999 152.125Q521.185 144.6 536.5849999999999 144.6Q551.7049999999999 144.6 558.4949999999999 151.075Q565.285 157.55 565.7049999999999 172.6Q565.775 174.91 565.775 177.60500000000002Q565.775 180.3 565.7049999999999 182.995Q565.635 185.69 565.5649999999999 188.0H544.5649999999999Q544.635 185.41 544.7049999999999 181.875Q544.775 178.33999999999997 544.775 174.80499999999998Q544.775 171.26999999999998 544.7049999999999 168.68Q544.635 165.32 542.5 163.5Q540.365 161.68 536.5849999999999 161.68Q532.5949999999999 161.68 530.3899999999999 163.5Q528.185 165.32 528.045 168.68Q527.765 176.02999999999997 527.66 184.57Q527.555 193.11 527.555 202.0Q527.555 210.89 527.66 219.39499999999998Q527.765 227.9 528.045 235.18Q528.185 238.61 530.3899999999999 240.465Q532.5949999999999 242.32 536.5849999999999 242.32Q540.7149999999999 242.32 542.9549999999999 240.465Q545.1949999999999 238.61 545.265 235.18Q545.3349999999999 232.66 545.3699999999999 229.125Q545.405 225.59 545.3699999999999 222.055Q545.3349999999999 218.51999999999998 545.265 216.0H566.265Q566.405 219.36 566.405 223.63Q566.405 227.9 566.265 231.26Q565.8449999999999 246.38 558.9499999999999 252.89Q552.055 259.4 536.5849999999999 259.4ZM576.135 258.0V146.0H603.155Q618.8349999999999 146.0 625.8 152.33499999999998Q632.765 158.67 633.255 173.3Q633.395 177.22 633.43 180.16Q633.4649999999999 183.1 633.43 186.04Q633.395 188.98 633.255 192.89999999999998Q632.975 202.0 630.21 207.81Q627.4449999999999 213.62 621.635 216.7L634.795 258.0H612.535L601.895 220.2H597.135V258.0ZM597.135 201.72H603.155Q607.5649999999999 201.72 609.805 199.69Q612.045 197.66 612.255 194.01999999999998Q612.4649999999999 190.58999999999997 612.535 186.84499999999997Q612.605 183.1 612.535 179.355Q612.4649999999999 175.60999999999999 612.255 172.18Q612.045 168.46999999999997 609.805 166.47499999999997Q607.5649999999999 164.48 603.155 164.48H597.135ZM638.7149999999999 258.0 654.255 146.0H687.295L702.8349999999999 258.0H681.275L678.895 234.62H662.655L660.275 258.0ZM664.6149999999999 216.14H676.935L674.415 191.36L672.7349999999999 164.48H668.8149999999999L667.135 191.36ZM738.8849999999999 259.4Q723.0649999999999 259.4 716.3799999999999 252.89Q709.6949999999999 246.38 709.3449999999999 231.26Q709.2749999999999 225.45 709.2049999999999 217.82Q709.1349999999999 210.19 709.1349999999999 201.965Q709.1349999999999 193.74 709.2049999999999 186.075Q709.2749999999999 178.41 709.3449999999999 172.45999999999998Q709.555 159.64999999999998 716.52 152.125Q723.4849999999999 144.6 738.8849999999999 144.6Q754.0049999999999 144.6 760.7949999999998 151.075Q767.5849999999999 157.55 768.0049999999999 172.6Q768.0749999999999 174.91 768.0749999999999 177.60500000000002Q768.0749999999999 180.3 768.0049999999999 182.995Q767.935 185.69 767.8649999999999 188.0H746.8649999999999Q746.935 185.41 747.0049999999999 181.875Q747.0749999999999 178.33999999999997 747.0749999999999 174.80499999999998Q747.0749999999999 171.26999999999998 747.0049999999999 168.68Q746.935 165.32 744.8 163.5Q742.665 161.68 738.8849999999999 161.68Q734.8949999999999 161.68 732.6899999999998 163.5Q730.4849999999999 165.32 730.3449999999999 168.68Q730.0649999999999 176.02999999999997 729.9599999999999 184.57Q729.8549999999999 193.11 729.8549999999999 202.0Q729.8549999999999 210.89 729.9599999999999 219.39499999999998Q730.0649999999999 227.9 730.3449999999999 235.18Q730.4849999999999 238.61 732.6899999999998 240.465Q734.8949999999999 242.32 738.8849999999999 242.32Q743.0149999999999 242.32 745.2549999999999 240.465Q747.4949999999999 238.61 747.5649999999999 235.18Q747.6349999999999 232.66 747.6699999999998 229.125Q747.7049999999999 225.59 747.6699999999998 222.055Q747.6349999999999 218.51999999999998 747.5649999999999 216.0H768.5649999999999Q768.7049999999999 219.36 768.7049999999999 223.63Q768.7049999999999 227.9 768.5649999999999 231.26Q768.1449999999999 246.38 761.2499999999999 252.89Q754.3549999999999 259.4 738.8849999999999 259.4ZM778.4350000000001 258.0V146.0H800.835L800.5550000000001 173.16L796.7750000000001 198.22H800.5550000000001L807.2750000000001 173.16L817.355 146.0H840.315L821.695 192.06L841.1550000000001 258.0H819.875L807.695 215.3L799.855 232.24V258.0ZM847.945 258.0V146.0H868.945V191.77999999999997H883.645V146.0H904.645V258.0H883.645V210.26H868.945V258.0ZM915.845 258.0V146.0H964.285V164.48H936.845V191.77999999999997H962.885V210.26H936.845V239.52H964.285V258.0ZM968.765 258.0 984.3050000000001 146.0H1017.345L1032.885 258.0H1011.325L1008.945 234.62H992.705L990.325 258.0ZM994.665 216.14H1006.985L1004.465 191.36L1002.785 164.48H998.865L997.1850000000001 191.36ZM1039.8849999999998 258.0V146.0H1068.3049999999998Q1084.0549999999998 146.0 1091.0899999999997 152.685Q1098.1249999999998 159.37 1098.4049999999997 174.7Q1098.6149999999998 184.43 1098.685 193.18Q1098.7549999999999 201.93 1098.685 210.68Q1098.6149999999998 219.43 1098.4049999999997 229.16Q1098.1249999999998 244.56 1091.0899999999997 251.28Q1084.0549999999998 258.0 1068.3049999999998 258.0ZM1060.8849999999998 239.52H1068.3049999999998Q1072.715 239.52 1075.0249999999999 237.49Q1077.3349999999998 235.46 1077.4049999999997 231.68Q1077.6149999999998 224.19 1077.7199999999998 216.76999999999998Q1077.8249999999998 209.35 1077.8249999999998 201.93Q1077.8249999999998 194.51 1077.7199999999998 187.055Q1077.6149999999998 179.6 1077.4049999999997 172.18Q1077.3349999999998 168.46999999999997 1075.0249999999999 166.47499999999997Q1072.715 164.48 1068.3049999999998 164.48H1060.8849999999998ZM1136.835 259.4Q1121.435 259.4 1114.8899999999999 252.89Q1108.345 246.38 1107.7150000000001 231.26Q1107.645 229.01999999999998 1107.645 226.325Q1107.645 223.63 1107.7849999999999 220.935Q1107.925 218.24 1108.275 216.0H1128.015Q1127.7350000000001 221.11 1127.665 226.08Q1127.595 231.05 1128.015 235.18Q1128.365 238.61 1130.5 240.465Q1132.635 242.32 1136.835 242.32Q1140.9650000000001 242.32 1142.89 240.465Q1144.815 238.61 1145.2350000000001 235.18Q1145.515 232.8 1145.6200000000001 230.45499999999998Q1145.7250000000001 228.10999999999999 1145.6200000000001 225.765Q1145.515 223.42 1145.2350000000001 221.04Q1144.955 218.1 1143.415 215.72Q1141.875 213.34 1138.515 212.5L1127.035 209.56Q1119.755 207.67 1115.4850000000001 204.135Q1111.2150000000001 200.6 1109.29 195.35Q1107.365 190.1 1107.155 183.1Q1107.085 180.01999999999998 1107.085 177.605Q1107.085 175.19 1107.155 172.6Q1107.575 162.58999999999997 1110.5500000000002 156.42999999999998Q1113.525 150.26999999999998 1119.895 147.435Q1126.265 144.6 1136.835 144.6Q1151.7450000000001 144.6 1158.4650000000001 151.075Q1165.185 157.55 1165.815 172.6Q1165.955 175.60999999999999 1165.85 179.95Q1165.7450000000001 184.29 1165.535 188.0H1145.375Q1145.585 183.17 1145.6550000000002 178.33999999999997Q1145.7250000000001 173.51 1145.515 168.68Q1145.445 165.32 1143.1 163.5Q1140.755 161.68 1136.835 161.68Q1132.635 161.68 1130.605 163.5Q1128.575 165.32 1128.155 168.68Q1127.7350000000001 172.25 1127.7350000000001 175.89Q1127.7350000000001 179.52999999999997 1128.155 183.1Q1128.505 185.89999999999998 1130.1150000000002 188.20999999999998Q1131.7250000000001 190.51999999999998 1135.295 191.36L1145.2350000000001 193.74Q1153.075 195.63 1157.5900000000001 199.305Q1162.105 202.98 1164.1 208.40499999999997Q1166.095 213.82999999999998 1166.375 221.04Q1166.445 222.65 1166.445 224.4Q1166.445 226.15 1166.375 227.9Q1166.305 229.65 1166.2350000000001 231.26Q1165.605 246.38 1158.99 252.89Q1152.375 259.4 1136.835 259.4ZM1175.545 258.0V238.54H1199.3450000000003V258.0ZM1206.3450000000003 258.0 1221.8850000000002 146.0H1254.9250000000002L1270.4650000000001 258.0H1248.9050000000002L1246.525 234.62H1230.285L1227.9050000000002 258.0ZM1232.2450000000001 216.14H1244.565L1242.045 191.36L1240.3650000000002 164.48H1236.4450000000002L1234.765 191.36ZM1277.465 258.0V146.0H1298.465V258.0Z" fill="#fff"/>
-<g transform="rotate(-3 501.9 325)"><path d="M505.93499999999995 326.576171875Q505.93499999999995 325.953125 506.10492187499995 325.443359375Q506.27484374999995 324.93359375 506.16156249999995 324.140625Q507.91742187499995 320.40234375 510.15472656249995 317.2021484375Q512.39203125 314.001953125 515.507265625 311.56640625Q516.01703125 311.169921875 516.3285546875 310.7451171875Q516.640078125 310.3203125 516.9516015625 309.923828125Q517.263125 309.52734375 517.659609375 309.2158203125Q518.05609375 308.904296875 518.679140625 308.791015625Q520.09515625 307.1484375 522.077578125 305.7890625Q524.06 304.4296875 526.21234375 303.18359375Q528.3646875 301.9375 530.5453515625 300.634765625Q532.726015625 299.33203125 534.481875 297.802734375Q535.104921875 298.19921875 535.4730859375 298.0576171875Q535.84125 297.916015625 536.237734375 298.029296875Q536.7475 299.10546875 537.5687890625 299.5302734375Q538.390078125 299.955078125 539.2680078125 300.3798828125Q540.1459375 300.8046875 540.9105859375 301.3994140625Q541.675234375 301.994140625 542.07171875 303.013671875Q541.675234375 303.013671875 541.7035546875 303.296875Q541.731875 303.580078125 541.84515625 303.919921875Q541.9584375 304.259765625 541.9584375 304.54296875Q541.9584375 304.826171875 541.448671875 304.826171875Q541.448671875 305.22265625 541.84515625 305.22265625Q542.241640625 305.22265625 542.241640625 305.619140625Q542.241640625 305.958984375 542.1000390625 306.1572265625Q541.9584375 306.35546875 542.07171875 306.80859375Q540.71234375 307.71484375 539.0414453125 308.5361328125Q537.370546875 309.357421875 535.5297265625 310.263671875Q533.68890625 311.169921875 531.7914453125 312.2177734375Q529.893984375 313.265625 528.02484375 314.625Q526.155703125 315.984375 524.2582421875 317.626953125Q522.36078125 319.26953125 520.604921875 321.1103515625Q518.8490625 322.951171875 517.319765625 324.9052734375Q515.79046875 326.859375 514.714296875 328.728515625Q514.827578125 329.01171875 515.0258203125 329.23828125Q515.2240625 329.46484375 515.33734375 329.748046875Q517.4896875 329.861328125 519.358828125 329.7197265625Q521.22796875 329.578125 523.097109375 329.974609375Q523.323671875 329.8046875 523.3803125 329.521484375Q523.436953125 329.23828125 523.72015625 329.125Q527.57171875 328.728515625 530.913515625 327.8505859375Q534.2553125 326.97265625 537.710390625 326.06640625Q536.690859375 325.669921875 535.897890625 325.443359375Q535.558046875 325.103515625 535.9262109375 324.8486328125Q536.294375 324.59375 536.5209375 324.310546875Q535.6146875 323.80078125 535.0199609375 322.951171875Q534.425234375 322.1015625 534.311953125 320.7421875Q534.7084375 320.40234375 534.7084375 319.94921875Q534.7084375 319.49609375 534.311953125 319.212890625Q534.02875 319.099609375 533.972109375 319.212890625Q533.91546875 319.326171875 533.8871484375 319.439453125Q533.858828125 319.552734375 533.7738671875 319.666015625Q533.68890625 319.779296875 533.46234375 319.666015625Q533.518984375 319.04296875 533.745546875 318.646484375Q533.972109375 318.25 534.085390625 317.68359375L538.7865625 314.568359375Q539.522890625 315.134765625 540.5990625 315.7578125Q541.675234375 316.380859375 542.8646875 317.00390625Q544.054140625 317.626953125 545.300234375 318.2783203125Q546.546328125 318.9296875 547.6225 319.552734375Q548.64203125 320.005859375 549.378359375 320.6572265625Q550.1146875 321.30859375 550.794375 322.0166015625Q551.4740625 322.724609375 552.15375 323.404296875Q552.8334375 324.083984375 553.796328125 324.537109375Q553.683046875 325.443359375 553.909609375 326.009765625Q554.136171875 326.576171875 554.022890625 327.369140625Q552.94671875 329.294921875 551.417421875 330.6259765625Q549.888125 331.95703125 547.9906640625 332.919921875Q546.093203125 333.8828125 543.940859375 334.5341796875Q541.788515625 335.185546875 539.522890625 335.7802734375Q537.257265625 336.375 534.9633203125 337.0263671875Q532.669375 337.677734375 530.460390625 338.52734375Q529.4975 338.52734375 528.8178125 338.583984375Q528.138125 338.640625 527.515078125 338.75390625Q526.89203125 338.8671875 526.268984375 338.98046875Q525.6459375 339.09375 524.909609375 339.150390625Q524.62640625 339.09375 524.5414453125 339.263671875Q524.456484375 339.43359375 524.2865625 339.546875Q523.15375 339.716796875 522.2475 339.716796875Q521.34125 339.716796875 520.718203125 339.716796875Q519.925234375 339.716796875 519.075625 339.943359375Q518.226015625 340.169921875 517.4896875 340.11328125Q512.39203125 339.88671875 509.50335937499995 336.48828125Q506.61468749999995 333.08984375 506.33148437499995 327.142578125Q506.38812499999995 326.859375 506.21820312499995 326.7744140625Q506.04828124999995 326.689453125 505.93499999999995 326.576171875ZM583.30609375 308.111328125Q583.362734375 308.5078125 583.3344140625 308.7060546875Q583.30609375 308.904296875 583.2777734375 309.07421875Q583.249453125 309.244140625 583.249453125 309.4423828125Q583.249453125 309.640625 583.362734375 310.037109375Q582.17328125 311.962890625 580.6156640625 312.6708984375Q579.058046875 313.37890625 577.245546875 313.6904296875Q575.433046875 314.001953125 573.5355859375 314.341796875Q571.638125 314.681640625 569.768984375 315.814453125Q569.03265625 315.53125 568.4379296875 315.814453125Q567.843203125 316.09765625 566.710390625 315.984375Q566.370546875 316.32421875 565.86078125 316.4658203125Q565.351015625 316.607421875 564.84125 316.77734375Q565.0678125 317.287109375 565.0394921875 317.8251953125Q565.011171875 318.36328125 565.18109375 318.703125Q567.163515625 318.873046875 569.5707421875 318.646484375Q571.97796875 318.419921875 574.300234375 318.36328125Q574.356875 318.646484375 574.24359375 318.7314453125Q574.1303125 318.81640625 574.186953125 319.04296875Q574.5834375 319.326171875 574.979921875 319.7509765625Q575.37640625 320.17578125 575.772890625 320.572265625Q576.169375 320.96875 576.5941796875 321.2236328125Q577.018984375 321.478515625 577.585390625 321.421875Q577.811953125 321.875 577.8969140625 322.4130859375Q577.981875 322.951171875 577.7553125 323.517578125Q576.8490625 324.140625 575.9428125 324.7919921875Q575.0365625 325.443359375 574.0453515625 325.953125Q573.054140625 326.462890625 571.9496484375 326.7744140625Q570.84515625 327.0859375 569.48578125 327.029296875Q569.202578125 327.029296875 569.0609765625 327.029296875Q568.919375 327.029296875 568.6928125 326.859375Q568.2396875 327.142578125 567.4183984375 327.029296875Q566.597109375 326.916015625 566.143984375 327.19921875Q565.5209375 326.916015625 564.6430078125 326.9443359375Q563.765078125 326.97265625 563.085390625 326.74609375Q562.179140625 327.935546875 561.4428125 329.294921875Q560.706484375 330.654296875 560.140078125 332.18359375Q562.065859375 332.466796875 563.3402734375 332.41015625Q564.6146875 332.353515625 565.7475 332.2119140625Q566.8803125 332.0703125 568.069765625 331.9287109375Q569.25921875 331.787109375 571.07171875 331.84375Q572.20453125 331.220703125 573.7621484375 331.0224609375Q575.319765625 330.82421875 576.6225 330.37109375Q577.075625 330.541015625 577.41546875 330.9658203125Q577.7553125 331.390625 578.0668359375 331.7587890625Q578.378359375 332.126953125 578.718203125 332.41015625Q579.058046875 332.693359375 579.5678125 332.63671875Q579.794375 332.86328125 579.8793359375 333.1748046875Q579.964296875 333.486328125 580.0209375 333.76953125Q580.077578125 334.052734375 580.2191796875 334.2509765625Q580.36078125 334.44921875 580.700625 334.392578125Q579.851015625 336.26171875 578.7465234375 337.2529296875Q577.64203125 338.244140625 576.226015625 338.75390625Q574.81 339.263671875 573.0824609375 339.546875Q571.354921875 339.830078125 569.25921875 340.2265625Q568.749453125 340.33984375 568.409609375 340.1982421875Q568.069765625 340.056640625 567.616640625 340.056640625Q566.31390625 340.33984375 564.50140625 340.56640625Q562.68890625 340.79296875 560.819765625 340.736328125Q558.950625 340.6796875 557.25140625 340.2548828125Q555.5521875 339.830078125 554.476015625 338.75390625Q554.022890625 338.357421875 553.8812890625 337.8193359375Q553.7396875 337.28125 553.116640625 336.998046875Q553.06 336.26171875 552.890078125 335.35546875Q552.72015625 334.44921875 552.550234375 333.4580078125Q552.3803125 332.466796875 552.2953515625 331.50390625Q552.210390625 330.541015625 552.3803125 329.748046875Q552.550234375 328.8984375 553.0883203125 328.21875Q553.62640625 327.5390625 553.456484375 326.74609375Q553.7396875 326.689453125 553.796328125 326.4345703125Q553.85296875 326.1796875 554.249453125 326.236328125Q554.589296875 325.216796875 554.98578125 324.310546875Q555.382265625 323.404296875 555.8070703125 322.5546875Q556.231875 321.705078125 556.6566796875 320.8271484375Q557.081484375 319.94921875 557.47796875 318.873046875Q556.685 318.13671875 556.3168359375 317.2587890625Q555.948671875 316.380859375 555.77875 315.5029296875Q555.608828125 314.625 555.495546875 313.6904296875Q555.382265625 312.755859375 555.0990625 311.79296875Q555.66546875 310.943359375 556.4867578125 310.4052734375Q557.308046875 309.8671875 558.2709375 309.52734375Q559.233828125 309.1875 560.366640625 308.9609375Q561.499453125 308.734375 562.745546875 308.451171875Q565.011171875 307.71484375 566.7953515625 307.318359375Q568.57953125 306.921875 570.3070703125 306.6669921875Q572.034609375 306.412109375 573.90375 306.185546875Q575.772890625 305.958984375 578.151796875 305.505859375Q578.6615625 306.015625 579.1146875 306.015625Q579.34125 305.505859375 579.6527734375 305.7041015625Q579.964296875 305.90234375 579.90765625 305.392578125Q580.4740625 306.35546875 581.3519921875 307.0068359375Q582.229921875 307.658203125 583.30609375 308.111328125ZM614.175234375 312.755859375Q612.75921875 312.755859375 611.116640625 312.9541015625Q609.4740625 313.15234375 607.888125 313.37890625Q606.7553125 313.548828125 605.7074609375 313.662109375Q604.659609375 313.775390625 603.81 313.83203125Q603.413515625 315.078125 603.01703125 316.041015625Q602.620546875 317.00390625 602.167421875 317.91015625Q601.714296875 318.873046875 601.3461328125 319.8642578125Q600.97796875 320.85546875 600.638125 321.98828125Q600.07171875 322.89453125 599.7035546875 323.6591796875Q599.335390625 324.423828125 599.108828125 325.38671875Q598.429140625 326.236328125 598.089296875 327.1708984375Q597.749453125 328.10546875 597.57953125 328.78515625L597.35296875 329.46484375Q597.013125 329.8046875 596.956484375 330.0029296875Q596.89984375 330.201171875 596.67328125 330.37109375Q596.616640625 330.994140625 596.276796875 331.6171875Q596.163515625 331.900390625 596.106875 332.1552734375Q596.050234375 332.41015625 596.050234375 332.5234375Q596.050234375 333.08984375 595.76703125 333.259765625Q595.823671875 333.54296875 595.76703125 333.8544921875Q595.710390625 334.166015625 595.65375 334.44921875Q595.483828125 335.12890625 595.54046875 335.525390625Q595.710390625 335.751953125 595.8519921875 335.921875Q595.99359375 336.091796875 596.050234375 336.375Q596.390078125 336.6015625 596.56 336.658203125Q596.7865625 336.828125 597.2396875 337.0546875L597.749453125 337.62109375Q598.03265625 339.263671875 597.2396875 340.2265625Q596.390078125 341.302734375 594.351015625 341.302734375H593.671328125Q593.388125 341.01953125 593.331484375 340.849609375Q592.878359375 340.6796875 592.59515625 340.56640625Q592.311953125 340.453125 592.085390625 340.11328125Q591.3490625 339.7734375 590.8959375 339.546875L590.386171875 339.263671875Q590.386171875 338.640625 590.386171875 338.583984375Q589.9896875 338.07421875 589.7914453125 337.451171875Q589.593203125 336.828125 589.479921875 336.205078125Q589.366640625 335.6953125 589.2250390625 335.2421875Q589.0834375 334.7890625 588.856875 334.44921875Q588.74359375 331.1640625 589.479921875 328.8984375Q590.21625 326.6328125 591.00921875 324.537109375Q591.46234375 323.404296875 591.91546875 322.2431640625Q592.36859375 321.08203125 592.7084375 319.8359375L593.218203125 319.26953125Q593.6146875 318.36328125 593.8695703125 317.7685546875Q594.124453125 317.173828125 594.40765625 316.55078125Q594.577578125 316.154296875 594.7191796875 315.7861328125Q594.86078125 315.41796875 594.9740625 315.134765625Q594.63421875 315.134765625 594.351015625 315.1630859375Q594.0678125 315.19140625 593.784609375 315.248046875Q593.444765625 315.3046875 593.1615625 315.3330078125Q592.878359375 315.361328125 592.59515625 315.361328125Q592.198671875 315.361328125 592.02875 315.3046875Q591.405703125 315.587890625 590.669375 315.587890625H590.10296875Q589.933046875 315.587890625 589.7914453125 315.5595703125Q589.64984375 315.53125 589.5365625 315.53125Q588.97015625 315.53125 588.6303125 315.701171875Q587.950625 315.701171875 587.327578125 315.701171875H586.761171875Q586.647890625 315.701171875 586.47796875 315.7294921875Q586.308046875 315.7578125 586.194765625 315.7578125Q585.79828125 315.7578125 585.34515625 315.6728515625Q584.89203125 315.587890625 584.382265625 315.3046875Q583.702578125 314.3984375 583.476015625 314.341796875L582.96625 313.662109375Q582.909609375 313.322265625 582.796328125 313.0107421875Q582.683046875 312.69921875 582.569765625 312.302734375Q582.343203125 311.736328125 582.1449609375 311.0849609375Q581.94671875 310.43359375 581.94671875 309.52734375Q582.003359375 309.07421875 582.17328125 308.84765625Q582.343203125 308.62109375 582.456484375 308.451171875L582.62640625 307.6015625L583.362734375 307.658203125H584.948671875Q586.761171875 307.658203125 588.6303125 307.5166015625Q590.499453125 307.375 592.481875 307.205078125Q593.6146875 307.091796875 594.7758203125 306.978515625Q595.936953125 306.865234375 597.183046875 306.751953125Q597.409609375 306.2421875 597.636171875 305.7890625L598.202578125 305.505859375Q599.222109375 305.44921875 599.6469140625 305.7607421875Q600.07171875 306.072265625 600.354921875 306.35546875Q601.601015625 306.2421875 602.8754296875 306.1005859375Q604.14984375 305.958984375 605.452578125 305.732421875Q607.378359375 305.44921875 609.3324609375 305.22265625Q611.2865625 304.99609375 613.0990625 304.99609375Q613.89203125 304.99609375 614.628359375 305.052734375Q615.3646875 305.109375 615.987734375 305.22265625L616.554140625 305.619140625Q616.7240625 305.958984375 617.0355859375 306.2421875Q617.347109375 306.525390625 617.686953125 306.80859375Q618.366640625 307.431640625 619.046328125 308.28125Q619.726015625 309.130859375 619.55609375 310.7734375Q619.10296875 311.453125 618.87640625 311.56640625L618.366640625 312.24609375L617.800234375 312.189453125Q617.460390625 312.189453125 617.1771875 312.2744140625Q616.893984375 312.359375 616.61078125 312.47265625Q616.38421875 312.5859375 616.15765625 312.6708984375Q615.93109375 312.755859375 615.647890625 312.8125Q615.138125 312.8125 614.8266015625 312.7841796875Q614.515078125 312.755859375 614.175234375 312.755859375ZM654.7865625 340.11328125Q653.8803125 340.169921875 652.5492578125 340.056640625Q651.218203125 339.943359375 650.085390625 340.453125Q647.0834375 340.33984375 643.968203125 339.716796875Q640.85296875 339.09375 638.2475 338.1875Q637.68109375 337.564453125 637.1146875 337.0263671875Q636.54828125 336.48828125 635.585390625 336.26171875Q634.226015625 335.185546875 633.37640625 333.6279296875Q632.526796875 332.0703125 632.01703125 330.314453125Q631.507265625 328.55859375 631.33734375 326.7177734375Q631.167421875 324.876953125 631.2240625 323.177734375Q632.073671875 320.62890625 633.6312890625 318.7880859375Q635.18890625 316.947265625 636.831484375 315.134765625Q637.5678125 314.794921875 637.9359765625 314.4267578125Q638.304140625 314.05859375 638.7289453125 313.7470703125Q639.15375 313.435546875 639.5785546875 313.1240234375Q640.003359375 312.8125 640.343203125 312.359375Q641.53265625 312.076171875 642.4105859375 311.5380859375Q643.288515625 311.0 644.138125 310.4052734375Q644.987734375 309.810546875 645.893984375 309.30078125Q646.800234375 308.791015625 647.9896875 308.5078125Q648.4428125 307.998046875 649.065859375 307.6865234375Q649.68890625 307.375 650.3402734375 307.0634765625Q650.991640625 306.751953125 651.5863671875 306.412109375Q652.18109375 306.072265625 652.5209375 305.505859375Q652.804140625 305.958984375 653.31390625 305.8173828125Q653.823671875 305.67578125 654.276796875 305.505859375Q654.56 305.44921875 654.7582421875 305.619140625Q654.956484375 305.7890625 655.12640625 305.958984375Q655.296328125 306.12890625 655.4379296875 306.1572265625Q655.57953125 306.185546875 655.6928125 305.90234375Q655.976015625 305.90234375 655.862734375 306.185546875Q655.749453125 306.46875 655.6928125 306.58203125Q656.1459375 306.525390625 656.4574609375 306.7802734375Q656.768984375 307.03515625 657.448671875 307.091796875Q657.675234375 307.375 657.561953125 307.5166015625Q657.448671875 307.658203125 657.448671875 307.998046875Q659.147890625 308.5078125 659.601015625 309.6123046875Q660.054140625 310.716796875 659.65765625 311.90625Q659.261171875 313.095703125 658.241640625 314.115234375Q657.222109375 315.134765625 656.03265625 315.474609375Q653.31390625 316.2109375 650.9066796875 317.0888671875Q648.499453125 317.966796875 646.97015625 319.666015625Q645.61078125 320.0625 644.5629296875 320.7138671875Q643.515078125 321.365234375 642.5805078125 322.1865234375Q641.6459375 323.0078125 640.8246484375 323.8857421875Q640.003359375 324.763671875 639.097109375 325.61328125Q639.15375 326.40625 638.8422265625 326.8310546875Q638.530703125 327.255859375 638.2475 327.708984375Q638.36078125 328.55859375 638.643984375 329.2099609375Q638.9271875 329.861328125 639.26703125 330.484375Q643.0053125 331.6171875 647.2250390625 331.900390625Q651.444765625 332.18359375 655.6928125 332.240234375Q656.089296875 332.806640625 656.6273828125 333.2880859375Q657.16546875 333.76953125 657.61859375 334.3076171875Q658.07171875 334.845703125 658.354921875 335.4970703125Q658.638125 336.1484375 658.468203125 337.111328125Q657.675234375 337.9609375 656.71234375 338.6689453125Q655.749453125 339.376953125 654.7865625 340.11328125ZM670.136171875 334.109375Q669.513125 336.375 669.0316796875 337.5361328125Q668.550234375 338.697265625 667.58734375 339.943359375Q666.851015625 339.830078125 666.5678125 340.11328125Q666.284609375 340.396484375 665.944765625 340.623046875Q665.435 340.736328125 665.2084375 340.623046875Q664.981875 340.509765625 664.811953125 340.3681640625Q664.64203125 340.2265625 664.3871484375 340.0849609375Q664.132265625 339.943359375 663.6225 339.943359375Q663.50921875 339.490234375 663.3676171875 339.09375Q663.226015625 338.697265625 662.60296875 338.810546875Q662.71625 338.357421875 662.659609375 338.0458984375Q662.60296875 337.734375 662.5180078125 337.4794921875Q662.433046875 337.224609375 662.37640625 336.9697265625Q662.319765625 336.71484375 662.433046875 336.318359375Q662.14984375 336.318359375 661.979921875 335.921875Q661.81 335.525390625 661.5834375 335.12890625Q661.753359375 334.109375 661.92328125 333.203125Q662.093203125 332.296875 662.3480859375 331.50390625Q662.60296875 330.7109375 662.772890625 329.91796875Q662.9428125 329.125 662.60296875 328.275390625Q662.82953125 328.4453125 662.9428125 328.1904296875Q663.05609375 327.935546875 663.112734375 327.5107421875Q663.169375 327.0859375 663.169375 326.6611328125Q663.169375 326.236328125 663.112734375 325.953125Q663.679140625 324.48046875 664.0473046875 322.9228515625Q664.41546875 321.365234375 664.7269921875 319.8359375Q665.038515625 318.306640625 665.378359375 316.833984375Q665.718203125 315.361328125 666.284609375 314.115234375Q666.90765625 314.001953125 667.6723046875 314.2568359375Q668.436953125 314.51171875 668.606875 314.908203125Q670.07953125 313.775390625 671.21234375 312.1611328125Q672.34515625 310.546875 673.534609375 309.017578125Q674.7240625 307.48828125 676.1683984375 306.298828125Q677.612734375 305.109375 679.82171875 304.8828125Q680.95453125 305.732421875 682.3422265625 306.6103515625Q683.729921875 307.48828125 684.636171875 308.904296875Q685.089296875 309.130859375 685.4008203125 309.3857421875Q685.71234375 309.640625 686.16546875 309.923828125V310.603515625Q686.84515625 311.2265625 687.2699609375 312.0478515625Q687.694765625 312.869140625 688.034609375 313.8037109375Q688.374453125 314.73828125 688.714296875 315.6728515625Q689.054140625 316.607421875 689.507265625 317.45703125Q689.393984375 317.740234375 689.393984375 317.9384765625Q689.393984375 318.13671875 689.4789453125 318.36328125Q689.56390625 318.58984375 689.620546875 318.81640625Q689.6771875 319.04296875 689.620546875 319.439453125Q689.450625 321.931640625 688.0062890625 323.4609375Q686.561953125 324.990234375 684.522890625 325.9814453125Q682.483828125 326.97265625 680.1615625 327.65234375Q677.839296875 328.33203125 675.97015625 329.125Q675.97015625 329.3515625 676.1683984375 329.3515625Q676.366640625 329.3515625 676.31 329.634765625Q677.669375 330.484375 678.46234375 330.994140625Q679.2553125 331.50390625 679.9633203125 331.84375Q680.671328125 332.18359375 681.4926171875 332.4384765625Q682.31390625 332.693359375 683.7865625 333.033203125Q685.25921875 333.373046875 686.0805078125 333.5712890625Q686.901796875 333.76953125 687.581484375 333.9111328125Q688.261171875 334.052734375 688.9691796875 334.1376953125Q689.6771875 334.22265625 690.979921875 334.3359375Q691.4896875 334.845703125 691.8578515625 335.5537109375Q692.226015625 336.26171875 692.339296875 336.9697265625Q692.452578125 337.677734375 692.3959375 338.3291015625Q692.339296875 338.98046875 691.999453125 339.376953125Q692.05609375 339.546875 692.2543359375 339.5185546875Q692.452578125 339.490234375 692.679140625 339.546875Q692.339296875 339.7734375 692.112734375 340.11328125Q691.886171875 340.453125 691.659609375 340.79296875Q691.433046875 341.1328125 691.14984375 341.3876953125Q690.866640625 341.642578125 690.356875 341.69921875Q688.601015625 342.37890625 685.93890625 341.7841796875Q683.276796875 341.189453125 679.198671875 339.603515625Q677.159609375 338.810546875 675.8851953125 338.2158203125Q674.61078125 337.62109375 673.6762109375 337.0263671875Q672.741640625 336.431640625 671.9769921875 335.751953125Q671.21234375 335.072265625 670.136171875 334.109375ZM678.23578125 314.681640625Q677.612734375 315.587890625 676.8480859375 316.32421875Q676.0834375 317.060546875 675.3754296875 317.8251953125Q674.667421875 318.58984375 674.101015625 319.5244140625Q673.534609375 320.458984375 673.308046875 321.705078125Q675.29046875 321.478515625 677.4428125 320.6005859375Q679.59515625 319.72265625 681.5209375 318.9296875Q681.294375 317.173828125 680.3031640625 316.09765625Q679.311953125 315.021484375 678.23578125 314.681640625ZM722.358828125 335.2421875Q722.018984375 336.205078125 721.3676171875 337.1962890625Q720.71625 338.1875 719.8383203125 338.9521484375Q718.960390625 339.716796875 717.88421875 340.2265625Q716.808046875 340.736328125 715.61859375 340.79296875Q714.882265625 340.623046875 714.6273828125 340.4248046875Q714.3725 340.2265625 714.089296875 340.056640625Q713.919375 339.943359375 713.7777734375 339.8583984375Q713.636171875 339.7734375 713.522890625 339.716796875L712.843203125 339.43359375L713.069765625 338.697265625Q713.183046875 338.244140625 713.013125 337.9892578125Q712.843203125 337.734375 712.3334375 337.28125Q712.163515625 337.111328125 711.99359375 336.94140625Q711.823671875 336.771484375 711.710390625 336.6015625L710.7475 335.525390625L712.276796875 335.12890625Q713.6928125 334.732421875 714.1742578125 334.109375Q714.655703125 333.486328125 714.542421875 332.013671875Q713.409609375 331.787109375 712.6449609375 331.95703125Q711.8803125 332.126953125 711.08734375 332.353515625Q710.0678125 332.63671875 709.0199609375 332.8349609375Q707.972109375 333.033203125 706.726015625 333.033203125Q706.272890625 333.033203125 705.87640625 333.0048828125Q705.479921875 332.9765625 705.026796875 332.919921875L704.460390625 332.806640625Q704.347109375 332.18359375 704.233828125 332.0986328125Q704.120546875 332.013671875 704.007265625 331.900390625Q703.7240625 331.6171875 703.4125390625 331.1357421875Q703.101015625 330.654296875 703.2709375 329.91796875Q702.987734375 329.408203125 702.93109375 328.8984375Q702.59125 329.578125 702.421328125 330.314453125L702.194765625 330.880859375L701.628359375 330.994140625Q701.515078125 331.05078125 701.4584375 331.2490234375Q701.401796875 331.447265625 701.401796875 331.560546875L701.11859375 332.5234375Q701.0053125 332.63671875 700.89203125 332.7216796875Q700.77875 332.806640625 700.66546875 332.919921875Q700.5521875 333.4296875 700.382265625 333.939453125Q700.21234375 334.44921875 700.042421875 334.90234375Q699.75921875 335.638671875 699.5609765625 336.3466796875Q699.362734375 337.0546875 699.419375 337.734375L699.1928125 338.357421875Q698.909609375 338.697265625 698.569765625 338.8955078125Q698.229921875 339.09375 697.890078125 339.263671875Q697.776796875 339.376953125 697.5785546875 339.4619140625Q697.3803125 339.546875 697.26703125 339.603515625L697.097109375 340.2265625L696.417421875 340.33984375Q695.794375 340.453125 695.5394921875 340.509765625Q695.284609375 340.56640625 694.944765625 340.56640625L694.378359375 340.509765625Q693.7553125 340.0 693.41546875 339.6884765625Q693.075625 339.376953125 692.6225 339.09375Q692.112734375 338.4140625 692.05609375 338.07421875Q691.999453125 337.734375 691.9428125 337.451171875Q691.82953125 337.111328125 691.8012109375 336.884765625Q691.772890625 336.658203125 691.659609375 336.544921875L690.92328125 335.865234375L691.546328125 335.35546875L691.60296875 334.392578125Q692.73578125 331.50390625 694.0101953125 328.841796875Q695.284609375 326.1796875 696.643984375 323.404296875Q697.097109375 322.498046875 697.5219140625 321.591796875Q697.94671875 320.685546875 698.39984375 319.779296875Q698.343203125 319.609375 698.343203125 319.3828125Q698.343203125 319.15625 698.456484375 318.873046875Q699.07953125 317.91015625 699.476015625 317.1455078125Q699.8725 316.380859375 700.268984375 315.587890625Q700.722109375 314.625 701.2035546875 313.71875Q701.685 312.8125 702.421328125 311.849609375L703.327578125 311.453125Q703.4975 311.396484375 703.7240625 311.3115234375Q703.950625 311.2265625 704.233828125 311.2265625L705.0834375 311.33984375Q706.669375 310.603515625 707.858828125 309.2724609375Q709.04828125 307.94140625 710.294375 306.072265625L710.86078125 305.279296875L711.597109375 305.732421875Q711.8803125 305.90234375 712.390078125 306.0439453125Q712.89984375 306.185546875 713.46625 306.35546875Q714.48578125 306.58203125 715.39203125 306.865234375Q716.29828125 307.1484375 716.8646875 307.71484375Q717.20453125 308.62109375 717.261171875 309.07421875Q717.3178125 309.52734375 717.43109375 309.98046875Q717.601015625 310.943359375 717.7426171875 311.90625Q717.88421875 312.869140625 717.940859375 314.05859375Q718.2240625 315.021484375 718.4223046875 315.9560546875Q718.620546875 316.890625 718.79046875 317.853515625Q719.073671875 319.212890625 719.356875 320.4873046875Q719.640078125 321.76171875 720.093203125 322.89453125Q720.546328125 322.89453125 720.659609375 322.951171875Q720.9428125 322.837890625 721.2543359375 322.78125Q721.565859375 322.724609375 721.96234375 322.66796875L722.585390625 322.611328125L722.811953125 323.177734375Q722.86859375 323.4609375 723.378359375 323.744140625Q724.1146875 323.80078125 724.45453125 324.0556640625Q724.794375 324.310546875 725.077578125 324.59375Q725.304140625 324.8203125 725.530703125 324.93359375L726.3803125 325.2734375L725.9271875 326.123046875Q725.36078125 327.142578125 724.3129296875 328.0771484375Q723.265078125 329.01171875 721.96234375 329.634765625Q722.018984375 329.974609375 722.0473046875 330.2861328125Q722.075625 330.59765625 722.18890625 330.9375Q722.358828125 331.900390625 722.472109375 332.919921875Q722.585390625 333.939453125 722.472109375 335.015625ZM705.9896875 325.443359375Q707.68890625 325.330078125 709.0766015625 325.1884765625Q710.464296875 325.046875 712.163515625 324.70703125Q711.76703125 323.0078125 711.31390625 321.1669921875Q710.86078125 319.326171875 710.351015625 317.513671875L710.011171875 318.080078125Q708.878359375 319.26953125 707.8305078125 320.7421875Q706.78265625 322.21484375 706.046328125 323.517578125Q705.706484375 324.02734375 705.366640625 324.537109375Q705.026796875 325.046875 704.74359375 325.556640625Q705.0834375 325.5 705.3949609375 325.5Q705.706484375 325.5 705.9896875 325.443359375ZM749.659609375 340.11328125Q748.753359375 340.169921875 747.4223046875 340.056640625Q746.09125 339.943359375 744.9584375 340.453125Q741.956484375 340.33984375 738.84125 339.716796875Q735.726015625 339.09375 733.120546875 338.1875Q732.554140625 337.564453125 731.987734375 337.0263671875Q731.421328125 336.48828125 730.4584375 336.26171875Q729.0990625 335.185546875 728.249453125 333.6279296875Q727.39984375 332.0703125 726.890078125 330.314453125Q726.3803125 328.55859375 726.210390625 326.7177734375Q726.04046875 324.876953125 726.097109375 323.177734375Q726.94671875 320.62890625 728.5043359375 318.7880859375Q730.061953125 316.947265625 731.70453125 315.134765625Q732.440859375 314.794921875 732.8090234375 314.4267578125Q733.1771875 314.05859375 733.6019921875 313.7470703125Q734.026796875 313.435546875 734.4516015625 313.1240234375Q734.87640625 312.8125 735.21625 312.359375Q736.405703125 312.076171875 737.2836328125 311.5380859375Q738.1615625 311.0 739.011171875 310.4052734375Q739.86078125 309.810546875 740.76703125 309.30078125Q741.67328125 308.791015625 742.862734375 308.5078125Q743.315859375 307.998046875 743.93890625 307.6865234375Q744.561953125 307.375 745.2133203125 307.0634765625Q745.8646875 306.751953125 746.4594140625 306.412109375Q747.054140625 306.072265625 747.393984375 305.505859375Q747.6771875 305.958984375 748.186953125 305.8173828125Q748.69671875 305.67578125 749.14984375 305.505859375Q749.433046875 305.44921875 749.6312890625 305.619140625Q749.82953125 305.7890625 749.999453125 305.958984375Q750.169375 306.12890625 750.3109765625 306.1572265625Q750.452578125 306.185546875 750.565859375 305.90234375Q750.8490625 305.90234375 750.73578125 306.185546875Q750.6225 306.46875 750.565859375 306.58203125Q751.018984375 306.525390625 751.3305078125 306.7802734375Q751.64203125 307.03515625 752.32171875 307.091796875Q752.54828125 307.375 752.435 307.5166015625Q752.32171875 307.658203125 752.32171875 307.998046875Q754.0209375 308.5078125 754.4740625 309.6123046875Q754.9271875 310.716796875 754.530703125 311.90625Q754.13421875 313.095703125 753.1146875 314.115234375Q752.09515625 315.134765625 750.905703125 315.474609375Q748.186953125 316.2109375 745.7797265625 317.0888671875Q743.3725 317.966796875 741.843203125 319.666015625Q740.483828125 320.0625 739.4359765625 320.7138671875Q738.388125 321.365234375 737.4535546875 322.1865234375Q736.518984375 323.0078125 735.6976953125 323.8857421875Q734.87640625 324.763671875 733.97015625 325.61328125Q734.026796875 326.40625 733.7152734375 326.8310546875Q733.40375 327.255859375 733.120546875 327.708984375Q733.233828125 328.55859375 733.51703125 329.2099609375Q733.800234375 329.861328125 734.140078125 330.484375Q737.878359375 331.6171875 742.0980859375 331.900390625Q746.3178125 332.18359375 750.565859375 332.240234375Q750.96234375 332.806640625 751.5004296875 333.2880859375Q752.038515625 333.76953125 752.491640625 334.3076171875Q752.944765625 334.845703125 753.22796875 335.4970703125Q753.511171875 336.1484375 753.34125 337.111328125Q752.54828125 337.9609375 751.585390625 338.6689453125Q750.6225 339.376953125 749.659609375 340.11328125ZM790.044375 337.9609375Q787.325625 338.07421875 785.2582421875 337.84765625Q783.190859375 337.62109375 781.2084375 336.771484375Q781.09515625 336.71484375 780.981875 336.48828125Q780.86859375 336.26171875 780.7553125 336.1484375Q780.41546875 335.978515625 779.9340234375 336.0068359375Q779.452578125 336.03515625 779.112734375 335.921875Q778.659609375 335.6953125 777.69671875 335.0439453125Q776.733828125 334.392578125 775.940859375 333.826171875Q774.921328125 333.033203125 774.015078125 332.240234375Q773.108828125 331.447265625 772.429140625 330.541015625Q772.25921875 330.314453125 771.976015625 330.2861328125Q771.6928125 330.2578125 771.46625 330.14453125Q769.823671875 331.1640625 768.690859375 332.693359375Q767.558046875 334.22265625 766.538515625 335.80859375Q765.518984375 337.39453125 764.386171875 338.810546875Q763.253359375 340.2265625 761.4975 340.962890625Q760.987734375 340.962890625 760.59125 340.79296875Q760.194765625 340.623046875 759.854921875 340.3681640625Q759.515078125 340.11328125 759.175234375 339.88671875Q758.835390625 339.66015625 758.43890625 339.546875Q758.43890625 338.8671875 758.1840234375 338.30078125Q757.929140625 337.734375 757.6742578125 337.224609375Q757.419375 336.71484375 757.30609375 336.2333984375Q757.1928125 335.751953125 757.53265625 335.298828125Q757.1928125 334.958984375 756.513125 334.5625Q756.85296875 334.22265625 756.8246484375 333.939453125Q756.796328125 333.65625 756.683046875 333.373046875Q756.569765625 333.08984375 756.4848046875 332.75Q756.39984375 332.41015625 756.62640625 332.0703125Q756.909609375 332.0703125 757.30609375 331.95703125Q756.96625 331.50390625 756.9945703125 331.4189453125Q757.022890625 331.333984375 756.85296875 331.1640625Q756.7396875 330.82421875 756.96625 330.7392578125Q757.1928125 330.654296875 757.419375 330.541015625Q757.6459375 327.765625 758.382265625 325.38671875Q759.11859375 323.0078125 760.02484375 320.798828125Q760.93109375 318.58984375 761.8090234375 316.32421875Q762.686953125 314.05859375 763.253359375 311.453125Q763.87640625 310.830078125 764.2445703125 309.98046875Q764.612734375 309.130859375 765.0375390625 308.28125Q765.46234375 307.431640625 766.0004296875 306.6103515625Q766.538515625 305.7890625 767.50140625 305.279296875Q768.294375 305.3359375 768.917421875 305.7041015625Q769.54046875 306.072265625 770.44671875 306.015625Q770.616640625 306.298828125 770.7582421875 306.58203125Q770.89984375 306.865234375 771.12640625 307.1484375L771.976015625 306.978515625Q772.5990625 307.48828125 773.0805078125 308.2529296875Q773.561953125 309.017578125 773.731875 309.8671875Q773.901796875 310.716796875 773.675234375 311.4814453125Q773.448671875 312.24609375 772.5990625 312.69921875Q772.655703125 312.982421875 772.6273828125 313.1240234375Q772.5990625 313.265625 772.542421875 313.37890625Q772.48578125 313.4921875 772.48578125 313.60546875Q772.48578125 313.71875 772.655703125 313.9453125Q771.522890625 314.794921875 770.956484375 316.32421875Q770.390078125 317.853515625 770.3334375 319.04296875Q771.013125 318.36328125 771.8344140625 317.7119140625Q772.655703125 317.060546875 773.5336328125 316.4375Q774.4115625 315.814453125 775.2328515625 315.248046875Q776.054140625 314.681640625 776.733828125 314.115234375Q778.60296875 312.416015625 780.3305078125 311.3681640625Q782.058046875 310.3203125 783.983828125 309.017578125Q784.436953125 308.904296875 784.6918359375 308.9892578125Q784.94671875 309.07421875 785.229921875 309.1875Q785.229921875 308.84765625 785.0316796875 308.791015625Q784.8334375 308.734375 784.890078125 308.337890625Q785.7396875 308.111328125 786.362734375 307.7998046875Q786.98578125 307.48828125 787.722109375 307.205078125Q788.231875 307.71484375 788.685 308.2529296875Q789.138125 308.791015625 789.93109375 308.904296875Q790.214296875 309.52734375 790.61078125 309.8388671875Q791.007265625 310.150390625 791.40375 310.43359375Q791.800234375 310.716796875 792.1117578125 311.11328125Q792.42328125 311.509765625 792.479921875 312.359375Q792.253359375 312.755859375 791.9984765625 313.208984375Q791.74359375 313.662109375 791.51703125 314.28515625Q790.38421875 315.3046875 789.2230859375 316.09765625Q788.061953125 316.890625 786.8725 317.626953125Q785.683046875 318.36328125 784.436953125 319.099609375Q783.190859375 319.8359375 781.888125 320.85546875Q781.604921875 321.251953125 781.1801171875 321.5634765625Q780.7553125 321.875 780.3021875 322.1865234375Q779.8490625 322.498046875 779.452578125 322.837890625Q779.05609375 323.177734375 778.82953125 323.630859375Q778.659609375 323.6875 778.4896875 323.6875Q778.319765625 323.6875 778.14984375 323.744140625Q777.979921875 324.140625 777.6117578125 324.3671875Q777.24359375 324.59375 777.1303125 324.990234375Q777.979921875 326.802734375 779.339296875 327.765625Q780.698671875 328.728515625 782.397890625 329.1533203125Q784.097109375 329.578125 786.07953125 329.6064453125Q788.061953125 329.634765625 790.214296875 329.634765625Q790.440859375 329.578125 790.4125390625 329.3798828125Q790.38421875 329.181640625 790.667421875 329.23828125Q792.026796875 329.69140625 792.763125 330.5126953125Q793.499453125 331.333984375 794.518984375 332.126953125Q794.405703125 334.279296875 793.21625 335.6953125Q792.026796875 337.111328125 790.044375 337.9609375ZM824.935 308.111328125Q824.991640625 308.5078125 824.9633203125 308.7060546875Q824.935 308.904296875 824.9066796875 309.07421875Q824.878359375 309.244140625 824.878359375 309.4423828125Q824.878359375 309.640625 824.991640625 310.037109375Q823.8021875 311.962890625 822.2445703125 312.6708984375Q820.686953125 313.37890625 818.874453125 313.6904296875Q817.061953125 314.001953125 815.1644921875 314.341796875Q813.26703125 314.681640625 811.397890625 315.814453125Q810.6615625 315.53125 810.0668359375 315.814453125Q809.472109375 316.09765625 808.339296875 315.984375Q807.999453125 316.32421875 807.4896875 316.4658203125Q806.979921875 316.607421875 806.47015625 316.77734375Q806.69671875 317.287109375 806.6683984375 317.8251953125Q806.640078125 318.36328125 806.81 318.703125Q808.792421875 318.873046875 811.1996484375 318.646484375Q813.606875 318.419921875 815.929140625 318.36328125Q815.98578125 318.646484375 815.8725 318.7314453125Q815.75921875 318.81640625 815.815859375 319.04296875Q816.21234375 319.326171875 816.608828125 319.7509765625Q817.0053125 320.17578125 817.401796875 320.572265625Q817.79828125 320.96875 818.2230859375 321.2236328125Q818.647890625 321.478515625 819.214296875 321.421875Q819.440859375 321.875 819.5258203125 322.4130859375Q819.61078125 322.951171875 819.38421875 323.517578125Q818.47796875 324.140625 817.57171875 324.7919921875Q816.66546875 325.443359375 815.6742578125 325.953125Q814.683046875 326.462890625 813.5785546875 326.7744140625Q812.4740625 327.0859375 811.1146875 327.029296875Q810.831484375 327.029296875 810.6898828125 327.029296875Q810.54828125 327.029296875 810.32171875 326.859375Q809.86859375 327.142578125 809.0473046875 327.029296875Q808.226015625 326.916015625 807.772890625 327.19921875Q807.14984375 326.916015625 806.2719140625 326.9443359375Q805.393984375 326.97265625 804.714296875 326.74609375Q803.808046875 327.935546875 803.07171875 329.294921875Q802.335390625 330.654296875 801.768984375 332.18359375Q803.694765625 332.466796875 804.9691796875 332.41015625Q806.24359375 332.353515625 807.37640625 332.2119140625Q808.50921875 332.0703125 809.698671875 331.9287109375Q810.888125 331.787109375 812.700625 331.84375Q813.8334375 331.220703125 815.3910546875 331.0224609375Q816.948671875 330.82421875 818.25140625 330.37109375Q818.70453125 330.541015625 819.044375 330.9658203125Q819.38421875 331.390625 819.6957421875 331.7587890625Q820.007265625 332.126953125 820.347109375 332.41015625Q820.686953125 332.693359375 821.19671875 332.63671875Q821.42328125 332.86328125 821.5082421875 333.1748046875Q821.593203125 333.486328125 821.64984375 333.76953125Q821.706484375 334.052734375 821.8480859375 334.2509765625Q821.9896875 334.44921875 822.32953125 334.392578125Q821.479921875 336.26171875 820.3754296875 337.2529296875Q819.2709375 338.244140625 817.854921875 338.75390625Q816.43890625 339.263671875 814.7113671875 339.546875Q812.983828125 339.830078125 810.888125 340.2265625Q810.378359375 340.33984375 810.038515625 340.1982421875Q809.698671875 340.056640625 809.245546875 340.056640625Q807.9428125 340.33984375 806.1303125 340.56640625Q804.3178125 340.79296875 802.448671875 340.736328125Q800.57953125 340.6796875 798.8803125 340.2548828125Q797.18109375 339.830078125 796.104921875 338.75390625Q795.651796875 338.357421875 795.5101953125 337.8193359375Q795.36859375 337.28125 794.745546875 336.998046875Q794.68890625 336.26171875 794.518984375 335.35546875Q794.3490625 334.44921875 794.179140625 333.4580078125Q794.00921875 332.466796875 793.9242578125 331.50390625Q793.839296875 330.541015625 794.00921875 329.748046875Q794.179140625 328.8984375 794.7172265625 328.21875Q795.2553125 327.5390625 795.085390625 326.74609375Q795.36859375 326.689453125 795.425234375 326.4345703125Q795.481875 326.1796875 795.878359375 326.236328125Q796.218203125 325.216796875 796.6146875 324.310546875Q797.011171875 323.404296875 797.4359765625 322.5546875Q797.86078125 321.705078125 798.2855859375 320.8271484375Q798.710390625 319.94921875 799.106875 318.873046875Q798.31390625 318.13671875 797.9457421875 317.2587890625Q797.577578125 316.380859375 797.40765625 315.5029296875Q797.237734375 314.625 797.124453125 313.6904296875Q797.011171875 312.755859375 796.72796875 311.79296875Q797.294375 310.943359375 798.1156640625 310.4052734375Q798.936953125 309.8671875 799.89984375 309.52734375Q800.862734375 309.1875 801.995546875 308.9609375Q803.128359375 308.734375 804.374453125 308.451171875Q806.640078125 307.71484375 808.4242578125 307.318359375Q810.2084375 306.921875 811.9359765625 306.6669921875Q813.663515625 306.412109375 815.53265625 306.185546875Q817.401796875 305.958984375 819.780703125 305.505859375Q820.29046875 306.015625 820.74359375 306.015625Q820.97015625 305.505859375 821.2816796875 305.7041015625Q821.593203125 305.90234375 821.5365625 305.392578125Q822.10296875 306.35546875 822.9808984375 307.0068359375Q823.858828125 307.658203125 824.935 308.111328125ZM851.499453125 324.70703125Q851.4428125 324.990234375 851.386171875 325.1884765625Q851.32953125 325.38671875 851.272890625 325.556640625Q851.21625 325.7265625 851.21625 325.9814453125Q851.21625 326.236328125 851.21625 326.6328125Q849.51703125 329.634765625 846.9398828125 331.673828125Q844.362734375 333.712890625 841.2758203125 335.2705078125Q838.18890625 336.828125 834.847109375 338.1025390625Q831.5053125 339.376953125 828.3334375 340.849609375Q826.9740625 340.509765625 826.2660546875 339.716796875Q825.558046875 338.923828125 825.1898828125 337.8759765625Q824.82171875 336.828125 824.6801171875 335.5537109375Q824.538515625 334.279296875 824.425234375 332.919921875Q824.59515625 332.296875 824.9066796875 331.8720703125Q825.218203125 331.447265625 825.218203125 330.654296875Q825.671328125 329.181640625 826.124453125 327.765625Q826.577578125 326.349609375 826.690859375 324.876953125Q826.86078125 324.423828125 827.31390625 324.25390625Q827.597109375 321.53515625 827.3422265625 318.7314453125Q827.08734375 315.927734375 826.40765625 313.4921875Q826.464296875 312.92578125 826.5492578125 312.6708984375Q826.63421875 312.416015625 826.5209375 312.302734375Q826.464296875 311.849609375 826.8324609375 311.849609375Q827.200625 311.849609375 827.597109375 311.849609375Q827.597109375 311.0 827.2855859375 310.150390625Q826.9740625 309.30078125 826.690859375 308.224609375Q827.08734375 307.375 827.200625 306.5537109375Q827.31390625 305.732421875 827.710390625 305.109375Q830.768984375 306.072265625 833.5726953125 307.431640625Q836.37640625 308.791015625 839.09515625 309.4140625Q841.13421875 310.88671875 843.2865625 312.3310546875Q845.43890625 313.775390625 847.194765625 315.5029296875Q848.950625 317.23046875 850.140078125 319.439453125Q851.32953125 321.6484375 851.499453125 324.70703125ZM838.075625 327.822265625Q839.265078125 327.369140625 840.4262109375 326.859375Q841.58734375 326.349609375 842.5785546875 325.6982421875Q843.569765625 325.046875 844.362734375 324.197265625Q845.155703125 323.34765625 845.66546875 322.158203125Q845.325625 321.478515625 844.75921875 320.9404296875Q844.1928125 320.40234375 843.62640625 319.9208984375Q843.06 319.439453125 842.5219140625 318.9296875Q841.983828125 318.419921875 841.643984375 317.68359375Q840.90765625 317.5703125 840.34125 317.2587890625Q839.77484375 316.947265625 839.2367578125 316.6357421875Q838.698671875 316.32421875 838.1039453125 316.041015625Q837.50921875 315.7578125 836.71625 315.701171875Q835.47015625 315.078125 834.4789453125 314.794921875Q833.487734375 314.51171875 832.97796875 314.05859375Q832.581484375 314.05859375 832.354921875 314.228515625Q832.921328125 316.380859375 833.20453125 318.2783203125Q833.487734375 320.17578125 833.5160546875 322.0732421875Q833.544375 323.970703125 833.3178125 325.953125Q833.09125 327.935546875 832.694765625 330.2578125Q833.261171875 330.201171875 833.7426171875 330.0029296875Q834.2240625 329.8046875 834.7055078125 329.578125Q835.186953125 329.3515625 835.7250390625 329.1533203125Q836.263125 328.955078125 836.999453125 328.8984375Q837.169375 328.55859375 837.4808984375 328.33203125Q837.792421875 328.10546875 838.075625 327.822265625ZM860.675234375 333.259765625Q860.788515625 333.712890625 860.84515625 334.109375Q860.901796875 334.505859375 861.015078125 334.958984375Q860.788515625 335.525390625 860.61859375 336.0634765625Q860.448671875 336.6015625 860.27875 337.111328125Q860.108828125 337.5078125 860.0521875 337.62109375Q859.995546875 337.734375 859.995546875 337.791015625Q859.995546875 337.84765625 860.0238671875 337.9326171875Q860.0521875 338.017578125 860.0521875 338.4140625L859.825625 339.09375Q859.542421875 339.490234375 859.1459375 339.716796875Q858.749453125 339.943359375 858.35296875 340.11328125Q858.2396875 340.2265625 858.013125 340.3115234375Q857.7865625 340.396484375 857.67328125 340.509765625L857.503359375 341.189453125L856.76703125 341.302734375Q855.804140625 341.529296875 855.124453125 341.529296875H854.444765625Q853.765078125 340.90625 853.36859375 340.56640625Q852.972109375 340.2265625 852.518984375 339.943359375Q851.952578125 339.150390625 851.8959375 338.7822265625Q851.839296875 338.4140625 851.726015625 338.07421875Q851.612734375 337.337890625 851.4428125 337.111328125L850.64984375 336.318359375L851.32953125 335.80859375L850.706484375 334.732421875Q851.386171875 334.22265625 851.726015625 333.99609375Q852.065859375 333.76953125 852.292421875 333.5146484375Q852.518984375 333.259765625 852.8021875 332.86328125Q853.085390625 332.466796875 853.7084375 331.560546875L854.218203125 330.82421875L854.95453125 331.220703125Q855.18109375 331.390625 855.9457421875 331.5322265625Q856.710390625 331.673828125 857.276796875 331.787109375Q858.2396875 332.0703125 859.089296875 332.2119140625Q859.93890625 332.353515625 860.448671875 332.806640625Z" fill="#fff"/></g>
-</svg>
-    <div class="foot-row">
-      <nav aria-label="Footer">
-        <a href="https://discord.gg/fGbmwPsM93" target="_blank" rel="noopener">Discord</a>
-        <a href="#build-night">Build nights</a>
-        <a href="#news">AI news</a>
-      </nav>
-      <span>Questions? Ask in the Discord</span>
-      <span>© 2026 Crackheads.ai</span>
-    </div>
+    <span>© 2026 Crackheads.ai</span>
+    <a href="https://discord.gg/fGbmwPsM93">Discord</a>
   </div>
 </footer>
 
+<dialog id="post-dialog" aria-labelledby="dlg-title"></dialog>
+
 <script>
 (function () {
-  var art = document.getElementById('art');
-  if (!art || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  art.addEventListener('pointermove', function (e) {
-    var r = art.getBoundingClientRect();
-    art.style.setProperty('--mx', ((e.clientX - r.left) / r.width - .5).toFixed(3));
-    art.style.setProperty('--my', ((e.clientY - r.top) / r.height - .5).toFixed(3));
-  });
-  art.addEventListener('pointerleave', function () { art.style.setProperty('--mx', 0); art.style.setProperty('--my', 0); });
-})();
-(function () {
-  // Placeholder: Thursday, Dec 4, 2026, 6:00 PM Central (UTC-6)
-  var target = Date.parse('2026-12-05T00:00:00Z');
-  var el = { d: document.getElementById('c-d'), h: document.getElementById('c-h'), m: document.getElementById('c-m'), s: document.getElementById('c-s') };
-  function pad(n) { return n < 10 ? '0' + n : String(n); }
-  function tick() {
-    var left = Math.max(0, target - Date.now());
-    var s = Math.floor(left / 1000);
-    el.d.textContent = pad(Math.floor(s / 86400));
-    el.h.textContent = pad(Math.floor(s % 86400 / 3600));
-    el.m.textContent = pad(Math.floor(s % 3600 / 60));
-    el.s.textContent = pad(s % 60);
+  var DISCORD = 'https://discord.gg/fGbmwPsM93';
+  var box = document.getElementById('ev');
+  // /api only exists on the Netlify site. Anywhere else (like a design preview) show a clearly marked sample.
+  var LIVE = /(^|\.)crackheads\.ai$|netlify\.app$|^localhost$|^127\.0\.0\.1$/.test(location.hostname);
+  var SAMPLE = [{ id: 'sample', title: 'Sample meetup', description: 'This is a sample. Real meetups load on the live site.', starts_at: new Date(Date.now() + 7 * 864e5).toISOString(), ends_at: null, image_url: null, attendee_count: 12 }];
+  var events = [], selected = null, sample = false, lastMsg = null;
+  var draft = { name: '', email: '', phone: '' };
+
+  function h(tag, attrs, kids) {
+    var el = document.createElement(tag);
+    Object.keys(attrs || {}).forEach(function (k) {
+      if (k === 'text') el.textContent = attrs[k];
+      else if (k === 'onclick') el.addEventListener('click', attrs[k]);
+      else el.setAttribute(k, attrs[k]);
+    });
+    (kids || []).forEach(function (c) { if (c) el.appendChild(c); });
+    return el;
   }
-  tick();
-  setInterval(tick, 1000);
+  function when(ev) {
+    var s = new Date(ev.starts_at), e = ev.ends_at ? new Date(ev.ends_at) : null;
+    var t = s.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' }) + ' · ' + s.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+    if (e) t += ' to ' + e.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+    return t + ' ' + (s.toLocaleTimeString(undefined, { timeZoneName: 'short' }).split(' ').pop());
+  }
+
+  function empty(title, text) {
+    box.replaceChildren(h('div', { class: 'ev-empty' }, [h('p', { text: text }), h('a', { class: 'btn', href: DISCORD, text: 'Join the Discord' })]));
+    box.firstChild.insertBefore(h('p', { class: 'ev-title', text: title }), box.firstChild.firstChild);
+  }
+
+  function field(id, key, label, type, max, req, auto) {
+    var inp = h('input', { id: id, name: id, type: type, maxlength: String(max), autocomplete: auto });
+    if (req) inp.required = true;
+    inp.value = draft[key];
+    inp.addEventListener('input', function () { draft[key] = inp.value; });
+    return h('div', { class: 'fld' }, [h('label', { for: id, text: label }), inp]);
+  }
+
+  function render() {
+    var ev = selected, n = Number(ev.attendee_count) || 0;
+    var info = h('div', {}, [
+      ev.image_url ? h('img', { class: 'ev-img', src: ev.image_url, alt: '' }) : null,
+      h('p', { class: 'ev-title', text: ev.title }),
+      h('p', { class: 'ev-when', text: when(ev) }),
+      ev.description ? h('p', { class: 'ev-desc', text: ev.description }) : null,
+      h('p', { class: 'going' }, [h('b', { text: String(n) }), document.createTextNode(n === 1 ? 'person going' : 'people going')])
+    ]);
+    if (events.length > 1) {
+      var pick = h('div', { class: 'picker', role: 'group', 'aria-label': 'Upcoming meetups' });
+      events.forEach(function (e) {
+        pick.appendChild(h('button', { type: 'button', class: 'chip', 'aria-pressed': String(e === ev),
+          text: new Date(e.starts_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) + ' · ' + e.title,
+          onclick: function () { selected = e; lastMsg = null; render(); } }));
+      });
+      info.appendChild(pick);
+    }
+
+    var msg = h('p', { class: 'msg', role: 'status' });
+    if (lastMsg) { msg.textContent = lastMsg.text; msg.className = 'msg ' + lastMsg.cls; }
+    function say(text, cls) { lastMsg = { text: text, cls: cls || '' }; msg.textContent = text; msg.className = 'msg ' + (cls || ''); }
+    var btn = h('button', { class: 'btn', type: 'submit', text: 'RSVP' });
+    var form = h('form', { class: 'rsvp-form', novalidate: '' }, [
+      field('rsvp-name', 'name', 'Name', 'text', 120, true, 'name'),
+      field('rsvp-email', 'email', 'Email', 'email', 254, true, 'email'),
+      field('rsvp-phone', 'phone', 'Phone (optional)', 'tel', 40, false, 'tel'),
+      btn, msg
+    ]);
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var name = form.elements['rsvp-name'], email = form.elements['rsvp-email'], phone = form.elements['rsvp-phone'];
+      if (!name.value.trim()) { say('Add your name so we know who’s coming.'); name.focus(); return; }
+      if (!email.value.trim() || !email.checkValidity()) { say('Enter an email address like you@company.com.'); email.focus(); return; }
+      if (sample) { say('This is a preview, so RSVPs only work on the live site.'); return; }
+      var body = { event_id: ev.id, name: name.value.trim(), email: email.value.trim() };
+      if (phone.value.trim()) body.phone_number = phone.value.trim();
+      btn.disabled = true; say('Sending your RSVP…');
+      fetch('/api/rsvp', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+        .then(function (res) {
+          if (res.status === 204) {
+            lastMsg = { text: 'You’re in. See you at ' + ev.title + '.', cls: 'ok' };
+            draft = { name: '', email: '', phone: '' };
+            return load();
+          }
+          return res.json().catch(function () { return {}; }).then(function (data) {
+            say((data && data.error) || ({
+              400: 'Something in the form isn’t right. Check your name and email and try again.',
+              404: 'This meetup isn’t taking RSVPs anymore.',
+              503: 'RSVPs are down for a moment. Try again in a few minutes.'
+            })[res.status] || 'That didn’t go through. Try again in a moment.');
+            if (res.status === 404) load();
+          });
+        })
+        .catch(function () { say('We couldn’t reach the server. Check your connection and try again.'); })
+        .then(function () { btn.disabled = false; });
+    });
+
+    box.replaceChildren(h('div', { class: 'ev' }, [info, form]));
+  }
+
+  function use(list) {
+    events = (list || []).slice().sort(function (a, b) { return new Date(a.starts_at) - new Date(b.starts_at); });
+    if (!events.length) { empty('No meetups scheduled yet', 'Join the Discord and you’ll hear first when the next one is set.'); return; }
+    selected = (selected && events.filter(function (e) { return e.id === selected.id; })[0]) || events[0];
+    render();
+  }
+
+  function load() {
+    box.setAttribute('aria-busy', 'true');
+    var done = function () { box.setAttribute('aria-busy', 'false'); };
+    if (!LIVE) { sample = true; use(SAMPLE); done(); return Promise.resolve(); }
+    return fetch('/api/events', { headers: { Accept: 'application/json' } })
+      .then(function (res) { if (!res.ok) throw new Error(res.status); return res.json(); })
+      .then(function (data) { use(data && data.events); })
+      .catch(function () { empty('Meetups didn’t load', 'Refresh in a minute, or check the Discord for the next date.'); })
+      .then(done);
+  }
+  load();
 })();
 </script>
+<script>
+(function () {
+  // AI news: reads feed.json ({ generated, items: [{ source, date, title, blurb, url, image, logo }] }), published next to this page.
+  var LIVE = /(^|\.)crackheads\.ai$|netlify\.app$|^localhost$|^127\.0\.0\.1$/.test(location.hostname);
+  var PAGE = 9;
+  var list = document.getElementById('feed'), status = document.getElementById('news-status'),
+      moreBtn = document.getElementById('show-more'), dlg = document.getElementById('post-dialog');
+  var items = [], shown = 0;
+  var SAMPLE = { generated: new Date().toISOString(), items: [
+    { source: 'Sample', date: new Date().toISOString(), title: 'Sample headline one', blurb: 'This is a sample card. Real AI news loads from feed.json on the live site.', url: 'https://crackheads.ai' },
+    { source: 'Sample', date: new Date(Date.now() - 864e5).toISOString(), title: 'Sample headline two', blurb: 'Each card opens a short summary with a link to the full article.', url: 'https://crackheads.ai' },
+    { source: 'Sample', date: new Date(Date.now() - 2 * 864e5).toISOString(), title: 'Sample headline three', blurb: 'Cards without an image show the source name instead.', url: 'https://crackheads.ai' }
+  ] };
+
+  function h(tag, attrs, kids) {
+    var el = document.createElement(tag);
+    Object.keys(attrs || {}).forEach(function (k) {
+      if (k === 'text') el.textContent = attrs[k];
+      else if (k === 'onclick') el.addEventListener('click', attrs[k]);
+      else el.setAttribute(k, attrs[k]);
+    });
+    (kids || []).forEach(function (c) { if (c) el.appendChild(c); });
+    return el;
+  }
+  function safe(u) { return typeof u === 'string' && /^https:\/\//i.test(u) ? u : null; }
+  function host(u) { try { return new URL(u).hostname.replace(/^www\./, ''); } catch (e) { return ''; } }
+  function day(d, long) {
+    var t = new Date(d);
+    if (isNaN(t)) return '';
+    return t.toLocaleDateString(undefined, long ? { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' } : { month: 'short', day: 'numeric' });
+  }
+  function media(it) {
+    var img = safe(it.image), logo = safe(it.logo);
+    if (img) {
+      var el = h('img', { src: img, alt: '', loading: 'lazy' });
+      var box = h('div', { class: 'media' }, [el]);
+      el.addEventListener('error', function () { box.replaceChildren(placeholder(it, logo)); });
+      return box;
+    }
+    return h('div', { class: 'media' }, [placeholder(it, logo)]);
+  }
+  function placeholder(it, logo) {
+    return h('div', { class: 'ph' }, [logo ? h('img', { src: logo, alt: '' }) : null, h('span', { text: it.source || 'AI news' })]);
+  }
+  function meta(it, long) { return [it.source, day(it.date, long)].filter(Boolean).join(' · '); }
+
+  function open(it) {
+    var url = safe(it.url);
+    var body = h('div', { class: 'post-body' }, [
+      h('p', { class: 'post-meta', text: meta(it, true) }),
+      h('h3', { class: 'post-title', id: 'dlg-title', text: it.title }),
+      it.blurb ? h('p', { class: 'post-blurb', text: it.blurb }) : null,
+      url ? h('a', { class: 'btn', href: url, target: '_blank', rel: 'noopener noreferrer', text: 'Read the full article on ' + (it.source || host(url)) + ' →' }) : null,
+      url ? h('p', { class: 'host', text: 'Opens ' + host(url) + ' in a new tab.' }) : null
+    ]);
+    var close = h('button', { class: 'close', type: 'button', 'aria-label': 'Close', text: '×', onclick: function () { dlg.close(); } });
+    dlg.replaceChildren(close, media(it), body);
+    dlg.showModal();
+  }
+  dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+
+  function card(it) {
+    return h('li', { class: 'post' }, [media(it), h('div', { class: 'post-body' }, [
+      h('p', { class: 'post-meta', text: meta(it) }),
+      h('h3', { class: 'post-title', text: it.title }),
+      it.blurb ? h('p', { class: 'post-blurb', text: it.blurb }) : null,
+      h('button', { class: 'more', type: 'button', text: 'Read more →', 'aria-label': 'Read more: ' + it.title, onclick: function () { open(it); } })
+    ])]);
+  }
+  function more() {
+    items.slice(shown, shown + PAGE).forEach(function (it) { list.appendChild(card(it)); });
+    shown = Math.min(items.length, shown + PAGE);
+    moreBtn.hidden = shown >= items.length;
+  }
+  moreBtn.addEventListener('click', more);
+
+  function use(data, sample) {
+    items = ((data && data.items) || []).filter(function (it) { return it && it.title; })
+      .sort(function (a, b) { return (Date.parse(b.date) || 0) - (Date.parse(a.date) || 0); });
+    list.replaceChildren(); shown = 0;
+    if (!items.length) { status.textContent = 'No updates yet. Check back soon.'; moreBtn.hidden = true; return; }
+    var g = data.generated && day(data.generated, true);
+    status.textContent = sample ? 'Sample cards. Real AI news loads on the live site.' : (g ? 'Updated ' + g : '');
+    more();
+  }
+  function done() { list.setAttribute('aria-busy', 'false'); }
+
+  if (!LIVE) { use(SAMPLE, true); done(); return; }
+  status.textContent = 'Loading the latest…';
+  fetch('feed.json', { cache: 'no-store', headers: { Accept: 'application/json' } })
+    .then(function (res) { if (!res.ok) throw new Error(res.status); return res.json(); })
+    .then(function (data) { use(data, false); })
+    .catch(function () { list.replaceChildren(); status.textContent = 'AI news didn’t load. Refresh in a minute.'; })
+    .then(done);
+})();
+</script>
+</body>
+</html>

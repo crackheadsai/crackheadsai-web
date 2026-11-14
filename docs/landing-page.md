@@ -1,13 +1,11 @@
 # crackheads.ai landing page
 
-`public/index.html` is the whole site, with every SVG inlined. Netlify serves the checked-in page from `public/`.
+`public/index.html` is the whole site: a plain, hand-written static page. Edit it directly.
 
-To change the page, edit `src/template.html` and regenerate it from the repository root.
+Sections, top to bottom: nav, hero, "What we build with" logo strip, Next meetup (RSVP), Latest in AI, footer.
 
-```bash
-python3 src/gen.py src/template.html public/index.html
-```
+- **Next meetup** reads `GET /api/events` and posts RSVPs to `POST /api/rsvp` (`netlify/functions/meetups.mjs`).
+- **Latest in AI** reads `/feed.json`, served by `netlify/functions/ai-news.mjs` from Supabase and filled by the scheduled `ai-news-refresh.mjs`.
+- Off the live hosts (crackheads.ai, *.netlify.app, localhost) both sections show clearly labeled sample content, so the page can be previewed anywhere.
 
-`gen.py` reads the logo, icon and banner SVGs from `public/brand/` and inlines them.
-
-The build-night date (Thu Dec 4, 6 PM CT), the seat count and venue, and the three AI news picks are placeholders.
+The earlier gallery-poster version is still generated from `src/template.html` with `python3 src/gen.py src/template.html <output>`. It is no longer what `public/index.html` serves.

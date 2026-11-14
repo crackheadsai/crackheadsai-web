@@ -1,0 +1,3 @@
+# Netlify serves the landing page from site/ (no build step; index.html is prebuilt).
+[build]
+  publish = "site"

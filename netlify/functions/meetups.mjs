@@ -34,7 +34,7 @@ async function supabase(path, keyName, options = {}) {
 
 async function publishedEvents(eventId) {
   const query = new URLSearchParams({
-    select: eventId ? "id" : "id,title,description,starts_at,ends_at,image_url,attendee_count",
+    select: eventId ? "id" : "id,title,description,starts_at,ends_at,image_url,attendee_count,location",
     starts_at: "gt." + new Date().toISOString(),
     order: "starts_at.asc,id.asc",
   });

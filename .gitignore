@@ -12,7 +12,12 @@ desktop.ini
 .vscode/
 .idea/
 
-# Dependencies and builds (for later)
+# Netlify local state and build output
+.netlify/
 node_modules/
 dist/
 build/
+
+# Python bytecode
+__pycache__/
+*.pyc

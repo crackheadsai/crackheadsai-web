@@ -1,0 +1,309 @@
+<title>Crackheads.ai</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Crackheads brings together people from every industry who are cracked about AI and ready to build.">
+<link rel="icon" type="image/svg+xml" href="{{FAV}}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=IBM+Plex+Mono:wght@400;600&family=Permanent+Marker&display=swap">
+<style>
+/* Layout: an exhibition-poster hero (giant type, an oversized cracked head bleeding off the edge, hairline captions), then hard black/white bands. Motion is the personality; color stays strictly black and white. */
+:root {
+  --bg: #fafaf7;
+  --fg: #0a0a0a;
+  --mute: #5d5d58;
+  --soft: #ececE6;
+  --line: #0a0a0a;
+  --inv-bg: #0a0a0a;
+  --inv-fg: #fafaf7;
+  --display: "Big Shoulders Display", "Impact", "Arial Narrow", sans-serif;
+  --body: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --hand: "Permanent Marker", "Comic Sans MS", cursive;
+  --r: 18px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #090909; --fg: #f5f5f0; --mute: #a2a29b; --soft: #1a1a19; --line: #f5f5f0; --inv-bg: #f5f5f0; --inv-fg: #090909; color-scheme: dark;
+} }
+:root[data-theme="dark"] {
+  --bg: #090909; --fg: #f5f5f0; --mute: #a2a29b; --soft: #1a1a19; --line: #f5f5f0; --inv-bg: #f5f5f0; --inv-fg: #090909; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 15px; line-height: 1.6; overflow-x: hidden; }
+.wrap { max-width: 1200px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--fg); outline-offset: 3px; }
+svg { display: block; }
+
+/* buttons: a crack draws across on hover */
+.btn {
+  position: relative; display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--display); font-weight: 900; font-size: 22px; letter-spacing: .03em; text-transform: uppercase; line-height: 1;
+  padding: 16px 26px; border-radius: 999px; border: 3px solid var(--fg);
+  background: var(--fg); color: var(--bg); text-decoration: none; overflow: hidden;
+  transition: transform .2s cubic-bezier(.2,.8,.2,1);
+}
+.btn.ghost { background: transparent; color: var(--fg); }
+.btn:hover { transform: translateY(-3px) rotate(-1.5deg); }
+.btn .crack { position: absolute; left: 8%; right: 8%; bottom: 6px; width: 84%; height: 12px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-dasharray: 160; stroke-dashoffset: 160; transition: stroke-dashoffset .45s ease; }
+.btn:hover .crack, .btn:focus-visible .crack { stroke-dashoffset: 0; }
+.btn.sm { font-size: 17px; padding: 10px 18px; border-width: 2px; }
+
+/* top bar */
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid color-mix(in srgb, var(--fg) 14%, transparent); }
+.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 12px; }
+.logo { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-weight: 900; font-size: 26px; letter-spacing: .02em; text-transform: uppercase; text-decoration: none; line-height: 1; }
+.logo .mark { width: 30px; height: 30px; fill: currentColor; transition: transform .5s cubic-bezier(.3,1.6,.5,1); }
+.logo:hover .mark { transform: rotate(-20deg) scale(1.1); }
+.top nav { display: flex; align-items: center; gap: 24px; font-size: 12px; text-transform: uppercase; letter-spacing: .14em; }
+.top nav a:not(.btn) { text-decoration: none; }
+.top nav a:not(.btn):hover { text-decoration: underline; text-underline-offset: 4px; }
+
+/* hero: an exhibition-poster composition. Huge solid type left, an oversized cracked head bleeding off the right edge, hairline frame with small mono captions. Type uses difference blending where it crosses the head. Motion is restrained: a masked type reveal and a slow drift. */
+.art { position: relative; isolation: isolate; overflow: hidden; height: clamp(560px, 58vw, 820px); background: var(--bg); --mx: 0; --my: 0; border-bottom: 1px solid var(--line); }
+.frame { position: absolute; inset: 0; z-index: 4; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; padding: 18px max(16px, env(safe-area-inset-right, 0px)) 18px max(16px, env(safe-area-inset-left, 0px)); font-size: 11px; text-transform: uppercase; letter-spacing: .2em; }
+.cap { display: flex; justify-content: space-between; align-items: center; gap: 16px; color: var(--fg); }
+.cap span:nth-child(2) { text-align: center; }
+.icons-row { display: flex; gap: 10px; align-items: center; }
+.icons-row svg { width: 26px; height: 26px; border-radius: 18.75%; box-shadow: 0 0 0 1px var(--line); filter: grayscale(1); }
+.head { position: absolute; z-index: 0; right: -7vw; top: 50%; width: clamp(340px, 66vw, 960px); aspect-ratio: 1; transform: translate(calc(var(--mx) * -10px), calc(-50% + var(--my) * -10px)) rotate(-8deg); animation: settle 1.6s cubic-bezier(.2,.8,.2,1) both; }
+.head svg { width: 100%; height: 100%; fill: var(--fg); }
+@keyframes settle { from { opacity: 0; scale: 1.06; } to { opacity: 1; scale: 1; } }
+.art h1 { position: absolute; z-index: 2; left: max(16px, env(safe-area-inset-left, 0px)); bottom: 9%; margin: 0; font-family: var(--display); font-weight: 900; text-transform: uppercase; font-size: clamp(110px, 17.5vw, 260px); line-height: .8; letter-spacing: -.02em; color: #fff; mix-blend-mode: difference; }
+.art h1 .ln { display: block; overflow: hidden; padding-bottom: .02em; }
+.art h1 .ln span { display: block; animation: reveal 1.1s cubic-bezier(.2,.8,.1,1) both; }
+.art h1 .ln + .ln span { animation-delay: .12s; }
+@keyframes reveal { from { transform: translateY(105%); } to { transform: none; } }
+.cross { position: absolute; z-index: 4; width: 14px; height: 14px; pointer-events: none; }
+.cross::before, .cross::after { content: ""; position: absolute; background: var(--fg); }
+.cross::before { left: 6px; top: 0; width: 1px; height: 14px; }
+.cross::after { top: 6px; left: 0; height: 1px; width: 14px; }
+.hero-foot { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 32px; align-items: end; padding-block: 40px 64px; }
+.lede { font-size: 16px; max-width: 58ch; margin: 0; }
+.ctas { display: flex; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }
+.note-hand { font-size: 11px; text-transform: uppercase; letter-spacing: .2em; display: block; text-align: right; margin-top: 16px; color: var(--mute); }
+
+/* tech marquee */
+.mq { background: var(--inv-bg); color: var(--inv-fg); overflow: hidden; padding-block: 18px; }
+.mq-label { font-size: 11px; text-transform: uppercase; letter-spacing: .2em; opacity: .65; margin-bottom: 10px; }
+.mq-track { display: flex; width: max-content; animation: roll 30s linear infinite; }
+.mq:hover .mq-track { animation-play-state: paused; }
+.mq-run { display: flex; align-items: center; }
+.tech { font-family: var(--display); font-weight: 900; font-size: clamp(34px, 5vw, 54px); text-transform: uppercase; letter-spacing: .02em; white-space: nowrap; padding: 0 28px; line-height: 1; }
+.sep { width: 44px; height: 44px; border-radius: 18.75%; flex: none; box-shadow: 0 0 0 2px var(--inv-fg); }
+@keyframes roll { to { transform: translateX(-50%); } }
+
+/* sections */
+section.block .wrap { padding-block: 88px; }
+h2 { font-family: var(--display); font-weight: 900; text-transform: uppercase; font-size: clamp(48px, 8vw, 104px); line-height: .88; margin: 0 0 14px; text-wrap: balance; }
+.sub { color: var(--mute); max-width: 58ch; margin: 0 0 40px; }
+
+/* RSVP */
+.rsvp { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 40px; align-items: start; }
+.event { background: var(--inv-bg); color: var(--inv-fg); border-radius: var(--r); padding: 32px; position: relative; overflow: hidden; }
+.event .tag { display: inline-block; font-size: 11px; text-transform: uppercase; letter-spacing: .18em; border: 1.5px solid var(--inv-fg); border-radius: 999px; padding: 4px 10px; }
+.event h3 { font-family: var(--display); font-weight: 900; font-size: clamp(40px, 5vw, 60px); text-transform: uppercase; line-height: .9; margin: 18px 0 20px; }
+.facts { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px 24px; margin: 0 0 26px; }
+.facts dt { font-size: 11px; text-transform: uppercase; letter-spacing: .16em; opacity: .65; }
+.facts dd { margin: 2px 0 0; font-weight: 600; }
+.count { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 8px; margin-bottom: 26px; font-variant-numeric: tabular-nums; }
+.count div { border: 2px solid var(--inv-fg); border-radius: 12px; padding: 12px 6px 8px; text-align: center; }
+.count b { display: block; font-family: var(--display); font-weight: 900; font-size: clamp(38px, 5vw, 58px); line-height: 1; }
+.count span { font-size: 10px; text-transform: uppercase; letter-spacing: .16em; opacity: .7; }
+.event .btn { background: var(--inv-fg); color: var(--inv-bg); border-color: var(--inv-fg); }
+.event .ghost-mark { position: absolute; right: -60px; top: -60px; width: 220px; height: 220px; fill: var(--inv-fg); opacity: .08; transform: rotate(18deg); }
+.ph { font-size: 12px; opacity: .65; margin: 14px 0 0; }
+.what { font-family: var(--display); font-weight: 700; font-size: clamp(26px, 3vw, 34px); line-height: 1.1; margin: 0 0 28px; text-wrap: balance; }
+.rules { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; border-top: 2px solid var(--line); }
+.rules li { display: grid; grid-template-columns: 56px minmax(0,1fr); gap: 18px; align-items: center; padding: 18px 0; border-bottom: 1px solid var(--line); }
+.rule-ic { width: 56px; height: 56px; border-radius: 18.75%; box-shadow: 0 0 0 2px var(--line); transition: transform .35s cubic-bezier(.3,1.6,.5,1); }
+.rules li:hover .rule-ic { transform: rotate(-10deg) scale(1.08); }
+.rules b { display: block; font-family: var(--display); font-weight: 900; font-size: 26px; text-transform: uppercase; line-height: 1; margin-bottom: 4px; }
+.rules span { font-size: 14px; color: var(--mute); }
+.rules-label { font-size: 12px; text-transform: uppercase; letter-spacing: .2em; margin: 0 0 12px; }
+
+/* news */
+.news-sec { background: var(--soft); }
+.news { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 20px; perspective: 1200px; }
+.news-card { background: var(--bg); border: 2px solid var(--line); border-radius: var(--r); padding: 24px; display: flex; flex-direction: column; gap: 12px; min-width: 0; transition: transform .45s cubic-bezier(.2,.8,.2,1), box-shadow .45s ease; transform-style: preserve-3d; }
+.news-card:hover { transform: rotateY(-8deg) rotateX(4deg) translateY(-6px); box-shadow: 10px 12px 0 var(--fg); }
+.news-top { display: flex; align-items: center; gap: 14px; }
+.news-ic { width: 52px; height: 52px; border-radius: 18.75%; flex: none; box-shadow: 0 0 0 2px var(--line); }
+.news-meta { display: flex; flex-direction: column; font-size: 11px; text-transform: uppercase; letter-spacing: .14em; }
+.news-meta span:first-child { font-weight: 600; }
+.news-meta span + span { color: var(--mute); }
+.news-card h3 { font-family: var(--display); font-weight: 900; font-size: 30px; line-height: .98; text-transform: uppercase; margin: 6px 0 0; text-wrap: balance; }
+.news-card p { margin: 0; font-size: 14px; color: var(--mute); flex: 1; }
+.news-link { font-size: 12px; text-transform: uppercase; letter-spacing: .14em; font-weight: 600; text-underline-offset: 4px; }
+.news-foot { font-size: 12px; color: var(--mute); margin-top: 20px; }
+
+/* footer */
+footer { background: var(--inv-bg); color: var(--inv-fg); }
+footer .wrap { padding-block: 72px 32px; display: grid; gap: 40px; }
+.foot-cta { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; }
+.foot-cta .big { font-family: var(--display); font-weight: 900; text-transform: uppercase; font-size: clamp(64px, 12vw, 168px); line-height: .82; margin: 0; }
+footer .btn { background: var(--inv-fg); color: var(--inv-bg); border-color: var(--inv-fg); }
+.banner { width: 100%; height: auto; border-radius: var(--r); box-shadow: 0 0 0 2px var(--inv-fg); }
+.foot-row { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 12px; text-transform: uppercase; letter-spacing: .14em; border-top: 1px solid color-mix(in srgb, var(--inv-fg) 30%, transparent); padding-top: 20px; }
+.foot-row nav { display: flex; gap: 20px; flex-wrap: wrap; }
+.foot-row a { text-decoration: none; }
+.foot-row a:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+@media (max-width: 900px) {
+  .rsvp, .hero-foot { grid-template-columns: minmax(0,1fr); }
+  .ctas { justify-content: flex-start; }
+  .note-hand { text-align: left; }
+  .news { grid-template-columns: minmax(0,1fr); }
+}
+@media (max-width: 620px) {
+  .top nav a:not(.btn) { display: none; }
+  .logo { font-size: 22px; }
+  .art { height: 150vw; }
+  .art h1 { font-size: 25vw; bottom: 12%; }
+  .head { width: 108vw; right: -38vw; top: 40%; }
+  .cap span:nth-child(2) { display: none; }
+  .icons-row svg:nth-child(n+5) { display: none; }
+  section.block .wrap { padding-block: 64px; }
+  .event { padding: 22px; }
+  .facts { grid-template-columns: minmax(0,1fr); }
+  .count b { font-size: 34px; }
+  .sep { width: 34px; height: 34px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .mq-track, .head, .art h1 .ln span { animation: none; }
+  .btn, .news-card, .rule-ic, .logo .mark { transition: none; }
+}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#top">{{HEAD_LOGO}}Crackheads.ai</a>
+    <nav aria-label="Sections">
+      <a href="#build-night">Next build night</a>
+      <a href="#news">AI news</a>
+      <a class="btn sm" href="{{DISCORD}}" target="_blank" rel="noopener">Join the Discord{{CRACK}}</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="art" id="art">
+      <div class="head" aria-hidden="true">{{HEAD_BIG}}</div>
+      <h1 aria-label="Get cracked."><span class="ln" aria-hidden="true"><span>Get</span></span><span class="ln" aria-hidden="true"><span>Cracked.</span></span></h1>
+      <span class="cross" style="left:50%;top:22%" aria-hidden="true"></span>
+      <span class="cross" style="left:8%;top:40%" aria-hidden="true"></span>
+      <div class="frame" aria-hidden="true">
+        <div class="cap"><span>Crackheads.ai</span><span>Build nights for people who are cracked about AI</span><span>Est. 2026</span></div>
+        <div class="cap"><div class="icons-row">{{ICON_ROW}}</div><span>Scroll ↓</span></div>
+      </div>
+    </div>
+    <div class="wrap hero-foot">
+      <p class="lede">AI is changing the world, and it's changing fast. Crackheads brings together people from every industry who want to use it to its fullest. Developers, marketers, operations leaders, it doesn't matter what you do. If you're cracked about AI and ready to build, you belong here.</p>
+      <div>
+        <div class="ctas">
+          <a class="btn" href="{{DISCORD}}" target="_blank" rel="noopener">Join the Discord{{CRACK}}</a>
+          <a class="btn ghost" href="#build-night">RSVP{{CRACK}}</a>
+        </div>
+        <span class="note-hand">No suits. Bring a laptop.</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="mq">
+    <div class="wrap"><div class="mq-label">What we build with</div></div>
+    {{MARQUEE}}
+  </div>
+
+  <section class="block" id="build-night">
+    <div class="wrap">
+      <h2>Next build night</h2>
+      <p class="sub">Grab a seat, bring an idea or join someone else's. RSVP happens in the Discord.</p>
+      <div class="rsvp">
+        <div class="event">
+          {{HEAD_GHOST}}
+          <span class="tag">Build night 01</span>
+          <h3>Thursday, Dec 4</h3>
+          <dl class="facts">
+            <div><dt>Time</dt><dd>6:00 to 9:00 PM CT</dd></div>
+            <div><dt>Place</dt><dd>Venue announced in Discord</dd></div>
+            <div><dt>Spots</dt><dd>30 seats</dd></div>
+            <div><dt>Bring</dt><dd>Laptop and a project, or nothing</dd></div>
+          </dl>
+          <div class="count" id="count" role="timer" aria-label="Time until build night">
+            <div><b id="c-d">--</b><span>Days</span></div>
+            <div><b id="c-h">--</b><span>Hours</span></div>
+            <div><b id="c-m">--</b><span>Min</span></div>
+            <div><b id="c-s">--</b><span>Sec</span></div>
+          </div>
+          <a class="btn" href="{{DISCORD}}" target="_blank" rel="noopener">RSVP in the Discord{{CRACK}}</a>
+          <p class="ph">Date, time and seat count are placeholders until the first build night is set.</p>
+        </div>
+        <div>
+          <p class="what">At a build night you work on Crackheads' own tools, team up on a project, or ship your own. Websites, games, system designs, whatever you bring.</p>
+          <p class="rules-label">House rules</p>
+          <ul class="rules">{{RULES}}</ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block news-sec" id="news">
+    <div class="wrap">
+      <h2>Top AI news</h2>
+      <p class="sub">Three stories worth talking about at the next build night.</p>
+      <div class="news">{{NEWS}}</div>
+      <p class="news-foot">Picked from the explainx.ai roundup for November 13, 2026.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-cta">
+      <p class="big">Get<br>cracked.</p>
+      <a class="btn" href="{{DISCORD}}" target="_blank" rel="noopener">Join the Discord{{CRACK}}</a>
+    </div>
+    {{BANNER}}
+    <div class="foot-row">
+      <nav aria-label="Footer">
+        <a href="{{DISCORD}}" target="_blank" rel="noopener">Discord</a>
+        <a href="#build-night">Build nights</a>
+        <a href="#news">AI news</a>
+      </nav>
+      <span>Questions? Ask in the Discord</span>
+      <span>© 2026 Crackheads.ai</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var art = document.getElementById('art');
+  if (!art || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  art.addEventListener('pointermove', function (e) {
+    var r = art.getBoundingClientRect();
+    art.style.setProperty('--mx', ((e.clientX - r.left) / r.width - .5).toFixed(3));
+    art.style.setProperty('--my', ((e.clientY - r.top) / r.height - .5).toFixed(3));
+  });
+  art.addEventListener('pointerleave', function () { art.style.setProperty('--mx', 0); art.style.setProperty('--my', 0); });
+})();
+(function () {
+  // Placeholder: Thursday, Dec 4, 2026, 6:00 PM Central (UTC-6)
+  var target = Date.parse('2026-12-05T00:00:00Z');
+  var el = { d: document.getElementById('c-d'), h: document.getElementById('c-h'), m: document.getElementById('c-m'), s: document.getElementById('c-s') };
+  function pad(n) { return n < 10 ? '0' + n : String(n); }
+  function tick() {
+    var left = Math.max(0, target - Date.now());
+    var s = Math.floor(left / 1000);
+    el.d.textContent = pad(Math.floor(s / 86400));
+    el.h.textContent = pad(Math.floor(s % 86400 / 3600));
+    el.m.textContent = pad(Math.floor(s % 3600 / 60));
+    el.s.textContent = pad(s % 60);
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+</script>

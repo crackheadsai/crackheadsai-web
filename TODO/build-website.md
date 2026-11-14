@@ -10,7 +10,7 @@ The long-term plan is a company that helps businesses build with AI, but right n
 
 ## Must have
 - Who we are and what we're about (a group that builds with AI, jam style)
-- What we've built / are building (jam projects as they land in `Done/`)
+- What we've built / are building (jam projects as they land in [completed work](../docs/DONE.md))
 - A clear "Join us" call to action (Discord, GitHub, or a sign-up form)
 
 ## Notes

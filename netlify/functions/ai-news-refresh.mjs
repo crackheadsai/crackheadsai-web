@@ -64,7 +64,19 @@ export async function refresh() {
   return { items: unique.length, failed };
 }
 
+async function hasRunBefore() {
+  const response = await fetch(new URL("/rest/v1/ai_news_runs?select=id&limit=1", Netlify.env.get("SUPABASE_URL")), {
+    headers: { apikey: Netlify.env.get("SUPABASE_SECRET_KEY") },
+    redirect: "error",
+    signal: AbortSignal.timeout(8000),
+  });
+  if (!response.ok) throw new Error("Supabase ai_news_runs read failed: " + response.status);
+  return (await response.json()).length > 0;
+}
+
 export default async function handler() {
-  if (!RUN_HOURS.includes(localHour(new Date()))) return;
+  // Off-hours wakes do nothing, except the very first run, so pressing
+  // "Run now" in Netlify right after launch fills the feed straight away.
+  if (!RUN_HOURS.includes(localHour(new Date())) && (await hasRunBefore())) return;
   await refresh();
 }
